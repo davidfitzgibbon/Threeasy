@@ -1,3 +1,4 @@
+import * as THREE from "three";
 import Scene from "./components/scene";
 import Renderer from "./components/renderer";
 import Camera from "./components/camera";
@@ -7,7 +8,8 @@ import Animator from "./components/animator";
 import Loader from "./components/loader";
 
 class Threeasy {
-  constructor(THREE) {
+  constructor() {
+    console.log(THREE);
     this.THREE = THREE;
     this.animator = new Animator(this);
     this.sizes = {

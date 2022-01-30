@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 class Scene {
   constructor(sketch, settings) {
     this.sketch = sketch;
@@ -140,7 +142,8 @@ class Loader {
 }
 
 class Threeasy {
-  constructor(THREE) {
+  constructor() {
+    console.log(THREE);
     this.THREE = THREE;
     this.animator = new Animator(this);
     this.sizes = {

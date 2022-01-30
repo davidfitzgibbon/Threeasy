@@ -1,5 +1,27 @@
 'use strict';
 
+var THREE = require('three');
+
+function _interopNamespace(e) {
+  if (e && e.__esModule) return e;
+  var n = Object.create(null);
+  if (e) {
+    Object.keys(e).forEach(function (k) {
+      if (k !== 'default') {
+        var d = Object.getOwnPropertyDescriptor(e, k);
+        Object.defineProperty(n, k, d.get ? d : {
+          enumerable: true,
+          get: function () { return e[k]; }
+        });
+      }
+    });
+  }
+  n["default"] = e;
+  return Object.freeze(n);
+}
+
+var THREE__namespace = /*#__PURE__*/_interopNamespace(THREE);
+
 class Scene {
   constructor(sketch, settings) {
     this.sketch = sketch;
@@ -142,8 +164,9 @@ class Loader {
 }
 
 class Threeasy {
-  constructor(THREE) {
-    this.THREE = THREE;
+  constructor() {
+    console.log(THREE__namespace);
+    this.THREE = THREE__namespace;
     this.animator = new Animator(this);
     this.sizes = {
       width: window.innerWidth,
@@ -159,7 +182,7 @@ class Threeasy {
         this.addObjects();
       },
     });
-    this.clock = new THREE.Clock();
+    this.clock = new THREE__namespace.Clock();
     this.clock.start();
 
     this.init();
