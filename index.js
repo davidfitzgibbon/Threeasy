@@ -1,44 +1,54 @@
-import * as THREE from "three";
-import Scene from "./components/scene";
-import Renderer from "./components/renderer";
-import Camera from "./components/camera";
-import Lights from "./components/lights";
-import Events from "./components/events";
-import Animator from "./components/animator";
-import Loader from "./components/loader";
+import ThreeasyScene from "./components/scene";
+import ThreeasyRenderer from "./components/renderer";
+import ThreeasyCamera from "./components/camera";
+import ThreeasyLights from "./components/lights";
+import ThreeasyEvents from "./components/events";
+import ThreeasyAnimator from "./components/animator";
+import ThreeasyLoader from "./components/loader";
 
-class Threeasy {
-  constructor() {
-    console.log(THREE);
+export default class Threeasy {
+  constructor(THREE, settings) {
+    this.settings = {
+      ...settings,
+    };
+
     this.THREE = THREE;
-    this.animator = new Animator(this);
+    this.animator = new ThreeasyAnimator(this);
     this.sizes = {
       width: window.innerWidth,
       height: window.innerHeight,
     };
-    this.scene = new Scene(this);
-    this.renderer = new Renderer(this);
-    this.camera = new Camera(this);
-    this.lights = new Lights(this);
-    this.events = new Events(this);
-    this.loader = new Loader(this, {
-      load: () => {
-        this.addObjects();
-      },
-    });
+    this.scene = new ThreeasyScene(this);
+    this.renderer = new ThreeasyRenderer(this);
+    this.camera = new ThreeasyCamera(this);
+    this.lights = new ThreeasyLights(this);
+    this.events = new ThreeasyEvents(this);
+    this.loader = new ThreeasyLoader(this);
     this.clock = new THREE.Clock();
     this.clock.start();
-
-    this.init();
-  }
-  init() {
-    //load texture
-    // const textureLoader = new THREE.TextureLoader(this.loader.manager);
-    // const texture = textureLoader.load('path/img.jpg');
+    this.postLoadFn = false;
 
     document.body.appendChild(this.renderer.domElement);
+
+    this.preload();
+  }
+  preload() {
+    // console.log("preload");
+    if (this.settings.preload) {
+      this.loader.load();
+    } else {
+      this.init();
+    }
+  }
+  init() {
+    if (this.settings.controls) {
+    }
+    if (this.postLoadFn) {
+      this.postLoadFn();
+    }
     this.animator.animate();
   }
+  postLoad(fn) {
+    this.postLoadFn = fn.bind(this);
+  }
 }
-
-export default Threeasy;

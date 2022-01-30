@@ -1,5 +1,5 @@
-class Scene {
-  constructor(sketch, settings) {
+class ThreeasyScene {
+  constructor(sketch) {
     this.sketch = sketch;
     this.THREE = this.sketch.THREE;
 
@@ -9,4 +9,4 @@ class Scene {
     return this.scene;
   }
 }
-export default Scene;
+export default ThreeasyScene;

@@ -1,4 +1,4 @@
-class Lights {
+class ThreeasyLights {
   constructor(sketch, settings) {
     this.sketch = sketch;
     this.THREE = this.sketch.THREE;
@@ -15,4 +15,4 @@ class Lights {
     this.sketch.scene.add(dirLight);
   }
 }
-export default Lights;
+export default ThreeasyLights;

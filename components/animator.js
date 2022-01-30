@@ -1,7 +1,7 @@
-class Animator {
+class ThreeasyAnimator {
   constructor(sketch, settings) {
     this.sketch = sketch;
-this.THREE = this.sketch.THREE;
+    this.THREE = this.sketch.THREE;
     this.settings = { ...settings };
 
     this.tasks = [];
@@ -17,4 +17,4 @@ this.THREE = this.sketch.THREE;
     this.sketch.renderer.update();
   }
 }
-export default Animator;
+export default ThreeasyAnimator;

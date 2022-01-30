@@ -8,6 +8,7 @@
     "push": "yalc push",
     "build": "rollup -c"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/davidfitzgibbon/Threeasy.git"
@@ -28,8 +29,5 @@
     "rollup": "^2.66.1",
     "rollup-plugin-execute": "^1.1.1",
     "rollup-plugin-terser": "^7.0.2"
-  },
-  "dependencies": {
-    "three": "^0.137.5"
   }
 }

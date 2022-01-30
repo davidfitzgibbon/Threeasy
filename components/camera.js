@@ -1,4 +1,4 @@
-class Camera {
+class ThreeasyCamera {
   constructor(sketch) {
     this.sketch = sketch;
     this.THREE = this.sketch.THREE;
@@ -17,4 +17,4 @@ class Camera {
     return this.camera;
   }
 }
-export default Camera;
+export default ThreeasyCamera;

@@ -1,4 +1,4 @@
-class Events {
+class ThreeasyEvents {
   constructor(sketch, settings) {
     this.sketch = sketch;
     this.THREE = this.sketch.THREE;
@@ -25,4 +25,4 @@ class Events {
     this.sketch.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
   }
 }
-export default Events;
+export default ThreeasyEvents;

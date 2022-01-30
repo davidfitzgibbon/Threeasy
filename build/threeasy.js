@@ -1,29 +1,5 @@
-'use strict';
-
-var THREE = require('three');
-
-function _interopNamespace(e) {
-  if (e && e.__esModule) return e;
-  var n = Object.create(null);
-  if (e) {
-    Object.keys(e).forEach(function (k) {
-      if (k !== 'default') {
-        var d = Object.getOwnPropertyDescriptor(e, k);
-        Object.defineProperty(n, k, d.get ? d : {
-          enumerable: true,
-          get: function () { return e[k]; }
-        });
-      }
-    });
-  }
-  n["default"] = e;
-  return Object.freeze(n);
-}
-
-var THREE__namespace = /*#__PURE__*/_interopNamespace(THREE);
-
-class Scene {
-  constructor(sketch, settings) {
+class ThreeasyScene {
+  constructor(sketch) {
     this.sketch = sketch;
     this.THREE = this.sketch.THREE;
 
@@ -34,7 +10,7 @@ class Scene {
   }
 }
 
-class Renderer {
+class ThreeasyRenderer {
   constructor(sketch) {
     this.sketch = sketch;
     this.THREE = this.sketch.THREE;
@@ -57,7 +33,7 @@ class Renderer {
   }
 }
 
-class Camera {
+class ThreeasyCamera {
   constructor(sketch) {
     this.sketch = sketch;
     this.THREE = this.sketch.THREE;
@@ -77,7 +53,7 @@ class Camera {
   }
 }
 
-class Lights {
+class ThreeasyLights {
   constructor(sketch, settings) {
     this.sketch = sketch;
     this.THREE = this.sketch.THREE;
@@ -95,7 +71,7 @@ class Lights {
   }
 }
 
-class Events {
+class ThreeasyEvents {
   constructor(sketch, settings) {
     this.sketch = sketch;
     this.THREE = this.sketch.THREE;
@@ -123,10 +99,10 @@ class Events {
   }
 }
 
-class Animator {
+class ThreeasyAnimator {
   constructor(sketch, settings) {
     this.sketch = sketch;
-this.THREE = this.sketch.THREE;
+    this.THREE = this.sketch.THREE;
     this.settings = { ...settings };
 
     this.tasks = [];
@@ -143,58 +119,132 @@ this.THREE = this.sketch.THREE;
   }
 }
 
-class Loader {
+class ThreeasyLoader {
   constructor(sketch, settings) {
+    this.sketch = sketch;
+    this.THREE = sketch.THREE;
+
     this.settings = {
       load: () => {
-        console.log("loaded");
+        // console.log("loaded");
+        this.sketch.init();
       },
       progress: (itemURL, itemsLoaded, itemsTotal) => {
-        console.log("%loaded:", itemsLoaded / itemsTotal);
+        // console.log("%loaded:", itemsLoaded / itemsTotal);
       },
+      gltfExtensions: [".gltf", ".glb"],
+      objExtensions: [".obj"],
+      textureExtensions: [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tga"],
       ...settings,
     };
-    this.THREE = sketch.THREE;
     this.manager = new this.THREE.LoadingManager(
       () => this.settings.load(),
       (itemURL, itemsLoaded, itemsTotal) =>
         this.settings.progress(itemURL, itemsLoaded, itemsTotal)
     );
+    this.setUpLoaders();
+  }
+  setUpLoaders() {
+    this.TextureLoader = false;
+    this.GLTFLoader = false;
+    this.OBJLoader = false;
+
+    if (this.sketch.settings.GLTFLoader) {
+      this.GLTFLoader = new this.sketch.settings.GLTFLoader(this.manager);
+    }
+    if (this.sketch.settings.OBJLoader) {
+      this.OBJLoader = new this.sketch.settings.OBJLoader(this.manager);
+    }
+
+    this.TextureLoader = new this.THREE.TextureLoader(this.manager);
+  }
+  load() {
+    for (const variable in this.sketch.settings.preload) {
+      let path = this.sketch.settings.preload[variable];
+      const isGltf = this.settings.gltfExtensions.some((extension) => {
+        return path.endsWith(extension);
+      });
+      if (isGltf) {
+        // console.log("glff");
+        this.GLTFLoader.load(path, (gltf) => {
+          this.sketch[variable] = gltf.scene;
+        });
+      } else {
+        const isObj = this.settings.objExtensions.some((extension) =>
+          path.endsWith(extension)
+        );
+        if (isObj) {
+          // console.log("obj");
+          this.OBJLoader.load(path, (obj) => {
+            console.log(obj);
+            this.sketch[variable] = obj;
+          });
+        } else {
+          const isTexture = this.settings.textureExtensions.some((extension) =>
+            path.endsWith(extension)
+          );
+          if (isTexture) {
+            // console.log("texture");
+            this.TextureLoader.load(path, (texture) => {
+              this.sketch[variable] = texture;
+              this.setUpModel(this.sketch[variable]);
+            });
+          }
+        }
+      }
+    }
+  }
+  setUpTexture(texture) {
+    THREE.sRGBEncoding;
+    THREE.RepeatWrapping;
+    THREE.RepeatWrapping;
   }
 }
 
 class Threeasy {
-  constructor() {
-    console.log(THREE__namespace);
-    this.THREE = THREE__namespace;
-    this.animator = new Animator(this);
+  constructor(THREE, settings) {
+    this.settings = {
+      ...settings,
+    };
+
+    this.THREE = THREE;
+    this.animator = new ThreeasyAnimator(this);
     this.sizes = {
       width: window.innerWidth,
       height: window.innerHeight,
     };
-    this.scene = new Scene(this);
-    this.renderer = new Renderer(this);
-    this.camera = new Camera(this);
-    this.lights = new Lights(this);
-    this.events = new Events(this);
-    this.loader = new Loader(this, {
-      load: () => {
-        this.addObjects();
-      },
-    });
-    this.clock = new THREE__namespace.Clock();
+    this.scene = new ThreeasyScene(this);
+    this.renderer = new ThreeasyRenderer(this);
+    this.camera = new ThreeasyCamera(this);
+    this.lights = new ThreeasyLights(this);
+    this.events = new ThreeasyEvents(this);
+    this.loader = new ThreeasyLoader(this);
+    this.clock = new THREE.Clock();
     this.clock.start();
-
-    this.init();
-  }
-  init() {
-    //load texture
-    // const textureLoader = new THREE.TextureLoader(this.loader.manager);
-    // const texture = textureLoader.load('path/img.jpg');
+    this.postLoadFn = false;
 
     document.body.appendChild(this.renderer.domElement);
+
+    this.preload();
+  }
+  preload() {
+    // console.log("preload");
+    if (this.settings.preload) {
+      this.loader.load();
+    } else {
+      this.init();
+    }
+  }
+  init() {
+    if (this.settings.controls) ;
+    if (this.postLoadFn) {
+      this.postLoadFn();
+    }
     this.animator.animate();
+  }
+  postLoad(fn) {
+    this.postLoadFn = fn.bind(this);
   }
 }
 
-module.exports = Threeasy;
+export { Threeasy as default };

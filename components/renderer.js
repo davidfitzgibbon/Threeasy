@@ -1,4 +1,4 @@
-class Renderer {
+class ThreeasyRenderer {
   constructor(sketch) {
     this.sketch = sketch;
     this.THREE = this.sketch.THREE;
@@ -20,4 +20,4 @@ class Renderer {
     this.renderer.render(this.scene, this.camera);
   }
 }
-export default Renderer;
+export default ThreeasyRenderer;
