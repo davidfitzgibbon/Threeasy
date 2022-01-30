@@ -1,10 +1,11 @@
 import ThreeasyScene from "./components/scene";
 import ThreeasyRenderer from "./components/renderer";
 import ThreeasyCamera from "./components/camera";
-import ThreeasyLights from "./components/lights";
+import ThreeasyLights from "./components/light";
 import ThreeasyEvents from "./components/events";
 import ThreeasyAnimator from "./components/animator";
 import ThreeasyLoader from "./components/loader";
+import ThreeasyPostLoader from "./components/postLoader";
 
 export default class Threeasy {
   constructor(THREE, settings) {
@@ -21,19 +22,18 @@ export default class Threeasy {
     this.scene = new ThreeasyScene(this);
     this.renderer = new ThreeasyRenderer(this);
     this.camera = new ThreeasyCamera(this);
-    this.lights = new ThreeasyLights(this);
+    this.light = new ThreeasyLights(this);
     this.events = new ThreeasyEvents(this);
     this.loader = new ThreeasyLoader(this);
+    this.postLoader = new ThreeasyPostLoader(this);
     this.clock = new THREE.Clock();
     this.clock.start();
-    this.postLoadFn = false;
 
     document.body.appendChild(this.renderer.domElement);
 
     this.preload();
   }
   preload() {
-    // console.log("preload");
     if (this.settings.preload) {
       this.loader.load();
     } else {
@@ -41,14 +41,7 @@ export default class Threeasy {
     }
   }
   init() {
-    if (this.settings.controls) {
-    }
-    if (this.postLoadFn) {
-      this.postLoadFn();
-    }
+    this.postLoader.load();
     this.animator.animate();
-  }
-  postLoad(fn) {
-    this.postLoadFn = fn.bind(this);
   }
 }

@@ -53,21 +53,19 @@ class ThreeasyCamera {
   }
 }
 
-class ThreeasyLights {
-  constructor(sketch, settings) {
+class ThreeasyLight {
+  constructor(sketch) {
     this.sketch = sketch;
     this.THREE = this.sketch.THREE;
 
-    this.ambient();
+    this.add();
   }
-  ambient() {
-    let ambLight = new this.THREE.AmbientLight(0xffffff, 0.7, 100);
-    this.sketch.scene.add(ambLight);
+  add() {
+    this.light = new this.THREE.HemisphereLight(0xffffbb, 0x080820, 1);
+    this.sketch.scene.add(this.light);
   }
-  directional() {
-    let dirLight = new this.THREE.DirectionalLight(0xffffff, 1, 100);
-    dirLight.position.set(-3, 5, -3);
-    this.sketch.scene.add(dirLight);
+  remove() {
+    this.sketch.scene.remove(this.light);
   }
 }
 
@@ -187,7 +185,7 @@ class ThreeasyLoader {
             // console.log("texture");
             this.TextureLoader.load(path, (texture) => {
               this.sketch[variable] = texture;
-              this.setUpModel(this.sketch[variable]);
+              this.setUpTexture(this.sketch[variable]);
             });
           }
         }
@@ -195,9 +193,24 @@ class ThreeasyLoader {
     }
   }
   setUpTexture(texture) {
-    THREE.sRGBEncoding;
-    THREE.RepeatWrapping;
-    THREE.RepeatWrapping;
+    this.THREE.sRGBEncoding;
+    this.THREE.RepeatWrapping;
+    this.THREE.RepeatWrapping;
+  }
+}
+
+class ThreeasyPostLoader {
+  constructor(sketch, settings) {
+    this.sketch = sketch;
+    this.THREE = this.sketch.THREE;
+
+    this.tasks = [];
+  }
+  add(fn) {
+    this.tasks.push(fn);
+  }
+  load() {
+    this.tasks.forEach((task) => task());
   }
 }
 
@@ -216,19 +229,18 @@ class Threeasy {
     this.scene = new ThreeasyScene(this);
     this.renderer = new ThreeasyRenderer(this);
     this.camera = new ThreeasyCamera(this);
-    this.lights = new ThreeasyLights(this);
+    this.light = new ThreeasyLight(this);
     this.events = new ThreeasyEvents(this);
     this.loader = new ThreeasyLoader(this);
+    this.postLoader = new ThreeasyPostLoader(this);
     this.clock = new THREE.Clock();
     this.clock.start();
-    this.postLoadFn = false;
 
     document.body.appendChild(this.renderer.domElement);
 
     this.preload();
   }
   preload() {
-    // console.log("preload");
     if (this.settings.preload) {
       this.loader.load();
     } else {
@@ -236,14 +248,8 @@ class Threeasy {
     }
   }
   init() {
-    if (this.settings.controls) ;
-    if (this.postLoadFn) {
-      this.postLoadFn();
-    }
+    this.postLoader.load();
     this.animator.animate();
-  }
-  postLoad(fn) {
-    this.postLoadFn = fn.bind(this);
   }
 }
 

@@ -1,7 +1,7 @@
 {
   "name": "threeasy",
-  "version": "0.0.0",
-  "description": "A wrapper and some sensible defaults for working with ThreeJS",
+  "version": "0.0.1",
+  "description": "A wrapper and some sensible defaults to make the early stages of learning ThreeJS easier",
   "main": "build/threeasy.js",
   "scripts": {
     "dev": "rollup -c -w",

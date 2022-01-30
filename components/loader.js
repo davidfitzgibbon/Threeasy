@@ -66,7 +66,7 @@ class ThreeasyLoader {
             // console.log("texture");
             this.TextureLoader.load(path, (texture) => {
               this.sketch[variable] = texture;
-              this.setUpModel(this.sketch[variable]);
+              this.setUpTexture(this.sketch[variable]);
             });
           } else {
             // console.log(`unknown asset type: ${path}`);
@@ -76,9 +76,9 @@ class ThreeasyLoader {
     }
   }
   setUpTexture(texture) {
-    texture = THREE.sRGBEncoding;
-    texture = THREE.RepeatWrapping;
-    texture = THREE.RepeatWrapping;
+    texture = this.THREE.sRGBEncoding;
+    texture = this.THREE.RepeatWrapping;
+    texture = this.THREE.RepeatWrapping;
   }
 }
 export default ThreeasyLoader;
