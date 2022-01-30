@@ -1,0 +1,32 @@
+{
+  "name": "threeasy",
+  "version": "0.0.0",
+  "description": "A wrapper and some sensible defaults for working with ThreeJS",
+  "main": "build/threeasy.js",
+  "scripts": {
+    "dev": "rollup -c -w",
+    "push": "yalc push",
+    "build": "rollup -c"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidfitzgibbon/Threeasy.git"
+  },
+  "keywords": [
+    "Three",
+    "ThreeJS",
+    "Shader",
+    "WebGL"
+  ],
+  "author": "David Fitzgibbon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/davidfitzgibbon/Threeasy/issues"
+  },
+  "homepage": "https://github.com/davidfitzgibbon/Threeasy#readme",
+  "devDependencies": {
+    "rollup": "^2.66.1",
+    "rollup-plugin-execute": "^1.1.1",
+    "rollup-plugin-terser": "^7.0.2"
+  }
+}
