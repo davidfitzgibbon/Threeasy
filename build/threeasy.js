@@ -1,108 +1,6 @@
-class ThreeasyScene {
-  constructor(sketch) {
-    this.sketch = sketch;
-    this.THREE = this.sketch.THREE;
-
-    this.scene = new this.THREE.Scene();
-    this.scene.background = new this.THREE.Color(0xffffff);
-
-    return this.scene;
-  }
-}
-
-class ThreeasyRenderer {
-  constructor(sketch) {
-    this.sketch = sketch;
-    this.THREE = this.sketch.THREE;
-
-    this.renderer = new this.THREE.WebGLRenderer({ antialias: true });
-    this.renderer.setSize(this.sketch.sizes.width, this.sketch.sizes.height);
-    this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
-    this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = this.THREE.PCFSoftShadowMap;
-    this.renderer.physicallyCorrectLights = true;
-    this.renderer.outputEncoding = this.THREE.sRGBEncoding;
-    this.renderer.toneMapping = this.THREE.ACESFilmicToneMapping;
-
-    this.renderer.update = this.update.bind(this.sketch);
-
-    return this.renderer;
-  }
-  update() {
-    this.renderer.render(this.scene, this.camera);
-  }
-}
-
-class ThreeasyCamera {
-  constructor(sketch) {
-    this.sketch = sketch;
-    this.THREE = this.sketch.THREE;
-
-    this.camera = new this.THREE.PerspectiveCamera(
-      75,
-      this.sketch.sizes.width / this.sketch.sizes.height,
-      1,
-      200
-    );
-    this.camera.position.x = 0;
-    this.camera.position.y = 0;
-    this.camera.position.z = 2;
-    this.sketch.scene.add(this.camera);
-
-    return this.camera;
-  }
-}
-
-class ThreeasyLight {
-  constructor(sketch) {
-    this.sketch = sketch;
-    this.THREE = this.sketch.THREE;
-
-    this.add();
-  }
-  add() {
-    this.light = new this.THREE.HemisphereLight(0xffffbb, 0x080820, 1);
-    this.sketch.scene.add(this.light);
-  }
-  remove() {
-    this.sketch.scene.remove(this.light);
-  }
-}
-
-class ThreeasyEvents {
-  constructor(sketch, settings) {
-    this.sketch = sketch;
-    this.THREE = this.sketch.THREE;
-    this.settings = { ...settings };
-
-    this.addEvents();
-  }
-  addEvents() {
-    window.addEventListener("resize", this.onWindowResize.bind(this), false);
-  }
-  onWindowResize() {
-    this.sketch.sizes = {
-      width: window.innerWidth,
-      height: window.innerHeight,
-    };
-
-    this.sketch.camera.aspect =
-      this.sketch.sizes.width / this.sketch.sizes.height;
-    this.sketch.camera.updateProjectionMatrix();
-    this.sketch.renderer.setSize(
-      this.sketch.sizes.width,
-      this.sketch.sizes.height
-    );
-    this.sketch.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
-  }
-}
-
 class ThreeasyAnimator {
-  constructor(sketch, settings) {
+  constructor(sketch) {
     this.sketch = sketch;
-    this.THREE = this.sketch.THREE;
-    this.settings = { ...settings };
-
     this.tasks = [];
   }
   add(fn) {
@@ -110,10 +8,8 @@ class ThreeasyAnimator {
   }
   animate() {
     requestAnimationFrame(this.animate.bind(this));
-
     this.tasks.forEach((task) => task());
-
-    this.sketch.renderer.update();
+    this.sketch.renderer.render(this.sketch.scene, this.sketch.camera);
   }
 }
 
@@ -200,10 +96,8 @@ class ThreeasyLoader {
 }
 
 class ThreeasyPostLoader {
-  constructor(sketch, settings) {
+  constructor(sketch) {
     this.sketch = sketch;
-    this.THREE = this.sketch.THREE;
-
     this.tasks = [];
   }
   add(fn) {
@@ -214,31 +108,63 @@ class ThreeasyPostLoader {
   }
 }
 
+// 16.6
 class Threeasy {
   constructor(THREE, settings) {
     this.settings = {
+      light: true,
       ...settings,
     };
 
     this.THREE = THREE;
+    this.setSize();
+    // ANIMATOR
     this.animator = new ThreeasyAnimator(this);
-    this.sizes = {
-      width: window.innerWidth,
-      height: window.innerHeight,
-    };
-    this.scene = new ThreeasyScene(this);
-    this.renderer = new ThreeasyRenderer(this);
-    this.camera = new ThreeasyCamera(this);
-    this.light = new ThreeasyLight(this);
-    this.events = new ThreeasyEvents(this);
+    // SCENE
+    this.scene = new THREE.Scene();
+    // RENDERER
+    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer.setSize(this.sizes.w, this.sizes.h);
+    this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.physicallyCorrectLights = true;
+    this.renderer.outputEncoding = THREE.sRGBEncoding;
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    // CAMERA
+    this.camera = new THREE.PerspectiveCamera(
+      75,
+      this.sizes.w / this.sizes.h,
+      1,
+      200
+    );
+    this.camera.position.x = 0;
+    this.camera.position.y = 0;
+    this.camera.position.z = 2;
+    this.scene.add(this.camera);
+    // LOADER
     this.loader = new ThreeasyLoader(this);
+    // POSTLOADER
     this.postLoader = new ThreeasyPostLoader(this);
+    // LIGHT
+    if (this.settings.light) {
+      this.light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
+      this.scene.add(this.light);
+    }
+    // CLOCK
     this.clock = new THREE.Clock();
     this.clock.start();
-
+    // RESIZE
     document.body.appendChild(this.renderer.domElement);
-
+    window.addEventListener("resize", this.onWindowResize.bind(this), false);
+    // PRELOAD
     this.preload();
+  }
+  setSize() {
+    this.sizes = {
+      w: window.innerWidth,
+      h: window.innerHeight,
+    };
   }
   preload() {
     if (this.settings.preload) {
@@ -250,6 +176,14 @@ class Threeasy {
   init() {
     this.postLoader.load();
     this.animator.animate();
+  }
+  onWindowResize() {
+    this.setSize();
+
+    this.camera.aspect = this.sizes.w / this.sizes.h;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(this.sizes.w, this.sizes.h);
+    this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
   }
 }
 

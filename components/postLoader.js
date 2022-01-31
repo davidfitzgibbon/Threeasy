@@ -1,8 +1,6 @@
 class ThreeasyPostLoader {
-  constructor(sketch, settings) {
+  constructor(sketch) {
     this.sketch = sketch;
-    this.THREE = this.sketch.THREE;
-
     this.tasks = [];
   }
   add(fn) {
