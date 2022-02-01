@@ -1,6 +1,7 @@
 import ThreeasyAnimator from "./components/animator";
 import ThreeasyLoader from "./components/loader";
 import ThreeasyPostLoader from "./components/postLoader";
+import ThreeasyComponent from "./component";
 
 // 16.6
 export default class Threeasy {

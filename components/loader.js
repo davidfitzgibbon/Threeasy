@@ -1,12 +1,12 @@
 class ThreeasyLoader {
-  constructor(sketch, settings) {
-    this.sketch = sketch;
-    this.THREE = sketch.THREE;
+  constructor(app, settings) {
+    this.app = app;
+    this.THREE = app.THREE;
 
     this.settings = {
       load: () => {
         // console.log("loaded");
-        this.sketch.init();
+        this.app.init();
       },
       progress: (itemURL, itemsLoaded, itemsTotal) => {
         // console.log("%loaded:", itemsLoaded / itemsTotal);
@@ -28,25 +28,25 @@ class ThreeasyLoader {
     this.GLTFLoader = false;
     this.OBJLoader = false;
 
-    if (this.sketch.settings.GLTFLoader) {
-      this.GLTFLoader = new this.sketch.settings.GLTFLoader(this.manager);
+    if (this.app.settings.GLTFLoader) {
+      this.GLTFLoader = new this.app.settings.GLTFLoader(this.manager);
     }
-    if (this.sketch.settings.OBJLoader) {
-      this.OBJLoader = new this.sketch.settings.OBJLoader(this.manager);
+    if (this.app.settings.OBJLoader) {
+      this.OBJLoader = new this.app.settings.OBJLoader(this.manager);
     }
 
     this.TextureLoader = new this.THREE.TextureLoader(this.manager);
   }
   load() {
-    for (const variable in this.sketch.settings.preload) {
-      let path = this.sketch.settings.preload[variable];
+    for (const variable in this.app.settings.preload) {
+      let path = this.app.settings.preload[variable];
       const isGltf = this.settings.gltfExtensions.some((extension) => {
         return path.endsWith(extension);
       });
       if (isGltf) {
         // console.log("glff");
         this.GLTFLoader.load(path, (gltf) => {
-          this.sketch[variable] = gltf.scene;
+          this.app[variable] = gltf.scene;
         });
       } else {
         const isObj = this.settings.objExtensions.some((extension) =>
@@ -56,7 +56,7 @@ class ThreeasyLoader {
           // console.log("obj");
           this.OBJLoader.load(path, (obj) => {
             console.log(obj);
-            this.sketch[variable] = obj;
+            this.app[variable] = obj;
           });
         } else {
           const isTexture = this.settings.textureExtensions.some((extension) =>
@@ -65,8 +65,8 @@ class ThreeasyLoader {
           if (isTexture) {
             // console.log("texture");
             this.TextureLoader.load(path, (texture) => {
-              this.sketch[variable] = texture;
-              this.setUpTexture(this.sketch[variable]);
+              this.app[variable] = texture;
+              this.setUpTexture(this.app[variable]);
             });
           } else {
             // console.log(`unknown asset type: ${path}`);

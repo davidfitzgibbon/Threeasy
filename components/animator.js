@@ -1,6 +1,6 @@
 class ThreeasyAnimator {
-  constructor(sketch) {
-    this.sketch = sketch;
+  constructor(app) {
+    this.app = app;
     this.tasks = [];
   }
   add(fn) {
@@ -9,7 +9,7 @@ class ThreeasyAnimator {
   animate() {
     requestAnimationFrame(this.animate.bind(this));
     this.tasks.forEach((task) => task());
-    this.sketch.renderer.render(this.sketch.scene, this.sketch.camera);
+    this.app.renderer.render(this.app.scene, this.app.camera);
   }
 }
 export default ThreeasyAnimator;

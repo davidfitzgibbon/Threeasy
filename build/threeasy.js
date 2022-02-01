@@ -1,6 +1,6 @@
 class ThreeasyAnimator {
-  constructor(sketch) {
-    this.sketch = sketch;
+  constructor(app
+    this.appappapp
     this.tasks = [];
   }
   add(fn) {
@@ -9,19 +9,19 @@ class ThreeasyAnimator {
   animate() {
     requestAnimationFrame(this.animate.bind(this));
     this.tasks.forEach((task) => task());
-    this.sketch.renderer.render(this.sketch.scene, this.sketch.camera);
+    this.appnderer.render(this.appapp, this.app.caapp
   }
 }
 
 class ThreeasyLoader {
-  constructor(sketch, settings) {
-    this.sketch = sketch;
-    this.THREE = sketch.THREE;
+  constructor(appettings) {
+    this.appappapp
+    this.THREE = appREE;
 
     this.settings = {
       load: () => {
         // console.log("loaded");
-        this.sketch.init();
+        this.appit();
       },
       progress: (itemURL, itemsLoaded, itemsTotal) => {
         // console.log("%loaded:", itemsLoaded / itemsTotal);
@@ -43,25 +43,25 @@ class ThreeasyLoader {
     this.GLTFLoader = false;
     this.OBJLoader = false;
 
-    if (this.sketch.settings.GLTFLoader) {
-      this.GLTFLoader = new this.sketch.settings.GLTFLoader(this.manager);
+    if (this.appttings.GLTFLoader) {
+      this.GLTFLoader = new this.appttings.GLTFLoader(this.manager);
     }
-    if (this.sketch.settings.OBJLoader) {
-      this.OBJLoader = new this.sketch.settings.OBJLoader(this.manager);
+    if (this.appttings.OBJLoader) {
+      this.OBJLoader = new this.appttings.OBJLoader(this.manager);
     }
 
     this.TextureLoader = new this.THREE.TextureLoader(this.manager);
   }
   load() {
-    for (const variable in this.sketch.settings.preload) {
-      let path = this.sketch.settings.preload[variable];
+    for (const variable in this.appttings.preload) {
+      let path = this.appttings.preload[variable];
       const isGltf = this.settings.gltfExtensions.some((extension) => {
         return path.endsWith(extension);
       });
       if (isGltf) {
         // console.log("glff");
         this.GLTFLoader.load(path, (gltf) => {
-          this.sketch[variable] = gltf.scene;
+          this.appriable] = gltf.scene;
         });
       } else {
         const isObj = this.settings.objExtensions.some((extension) =>
@@ -71,7 +71,7 @@ class ThreeasyLoader {
           // console.log("obj");
           this.OBJLoader.load(path, (obj) => {
             console.log(obj);
-            this.sketch[variable] = obj;
+            this.appriable] = obj;
           });
         } else {
           const isTexture = this.settings.textureExtensions.some((extension) =>
@@ -80,8 +80,8 @@ class ThreeasyLoader {
           if (isTexture) {
             // console.log("texture");
             this.TextureLoader.load(path, (texture) => {
-              this.sketch[variable] = texture;
-              this.setUpTexture(this.sketch[variable]);
+              this.appriable] = texture;
+              this.setUpTexture(this.appriable]);
             });
           }
         }
@@ -96,8 +96,8 @@ class ThreeasyLoader {
 }
 
 class ThreeasyPostLoader {
-  constructor(sketch) {
-    this.sketch = sketch;
+  constructor(app
+    this.appappapp
     this.tasks = [];
   }
   add(fn) {
