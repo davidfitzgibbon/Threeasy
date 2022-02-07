@@ -1,6 +1,6 @@
 class ThreeasyAnimator {
-  constructor(app
-    this.appappapp
+  constructor(app) {
+    this.app = app;
     this.tasks = [];
   }
   add(fn) {
@@ -9,19 +9,19 @@ class ThreeasyAnimator {
   animate() {
     requestAnimationFrame(this.animate.bind(this));
     this.tasks.forEach((task) => task());
-    this.appnderer.render(this.appapp, this.app.caapp
+    this.app.renderer.render(this.app.scene, this.app.camera);
   }
 }
 
 class ThreeasyLoader {
-  constructor(appettings) {
-    this.appappapp
-    this.THREE = appREE;
+  constructor(app, settings) {
+    this.app = app;
+    this.THREE = app.THREE;
 
     this.settings = {
       load: () => {
         // console.log("loaded");
-        this.appit();
+        this.app.init();
       },
       progress: (itemURL, itemsLoaded, itemsTotal) => {
         // console.log("%loaded:", itemsLoaded / itemsTotal);
@@ -43,50 +43,44 @@ class ThreeasyLoader {
     this.GLTFLoader = false;
     this.OBJLoader = false;
 
-    if (this.appttings.GLTFLoader) {
-      this.GLTFLoader = new this.appttings.GLTFLoader(this.manager);
+    if (this.app.settings.GLTFLoader) {
+      this.GLTFLoader = new this.app.settings.GLTFLoader(this.manager);
     }
-    if (this.appttings.OBJLoader) {
-      this.OBJLoader = new this.appttings.OBJLoader(this.manager);
+    if (this.app.settings.OBJLoader) {
+      this.OBJLoader = new this.app.settings.OBJLoader(this.manager);
     }
 
     this.TextureLoader = new this.THREE.TextureLoader(this.manager);
   }
   load() {
-    for (const variable in this.appttings.preload) {
-      let path = this.appttings.preload[variable];
-      const isGltf = this.settings.gltfExtensions.some((extension) => {
-        return path.endsWith(extension);
-      });
-      if (isGltf) {
-        // console.log("glff");
+    for (const variable in this.app.settings.preload) {
+      let path = this.app.settings.preload[variable];
+
+      // gltf
+      if (this.endsWith(path, this.settings.gltfExtensions)) {
         this.GLTFLoader.load(path, (gltf) => {
-          this.appriable] = gltf.scene;
+          this.app[variable] = gltf.scene;
         });
-      } else {
-        const isObj = this.settings.objExtensions.some((extension) =>
-          path.endsWith(extension)
-        );
-        if (isObj) {
-          // console.log("obj");
-          this.OBJLoader.load(path, (obj) => {
-            console.log(obj);
-            this.appriable] = obj;
-          });
-        } else {
-          const isTexture = this.settings.textureExtensions.some((extension) =>
-            path.endsWith(extension)
-          );
-          if (isTexture) {
-            // console.log("texture");
-            this.TextureLoader.load(path, (texture) => {
-              this.appriable] = texture;
-              this.setUpTexture(this.appriable]);
-            });
-          }
-        }
+      }
+
+      // obj
+      if (this.endsWith(path, this.settings.objExtensions)) {
+        this.OBJLoader.load(path, (obj) => {
+          this.app[variable] = obj;
+        });
+      }
+
+      // texture
+      if (this.endsWith(path, this.settings.textureExtensions)) {
+        this.TextureLoader.load(path, (texture) => {
+          this.app[variable] = texture;
+          this.setUpTexture(this.app[variable]);
+        });
       }
     }
+  }
+  endsWith(path, arr) {
+    return arr.some((extension) => path.endsWith(extension));
   }
   setUpTexture(texture) {
     this.THREE.sRGBEncoding;
@@ -96,8 +90,8 @@ class ThreeasyLoader {
 }
 
 class ThreeasyPostLoader {
-  constructor(app
-    this.appappapp
+  constructor(app) {
+    this.app = app;
     this.tasks = [];
   }
   add(fn) {

@@ -40,40 +40,32 @@ class ThreeasyLoader {
   load() {
     for (const variable in this.app.settings.preload) {
       let path = this.app.settings.preload[variable];
-      const isGltf = this.settings.gltfExtensions.some((extension) => {
-        return path.endsWith(extension);
-      });
-      if (isGltf) {
-        // console.log("glff");
+
+      // gltf
+      if (this.endsWith(path, this.settings.gltfExtensions)) {
         this.GLTFLoader.load(path, (gltf) => {
           this.app[variable] = gltf.scene;
         });
-      } else {
-        const isObj = this.settings.objExtensions.some((extension) =>
-          path.endsWith(extension)
-        );
-        if (isObj) {
-          // console.log("obj");
-          this.OBJLoader.load(path, (obj) => {
-            console.log(obj);
-            this.app[variable] = obj;
-          });
-        } else {
-          const isTexture = this.settings.textureExtensions.some((extension) =>
-            path.endsWith(extension)
-          );
-          if (isTexture) {
-            // console.log("texture");
-            this.TextureLoader.load(path, (texture) => {
-              this.app[variable] = texture;
-              this.setUpTexture(this.app[variable]);
-            });
-          } else {
-            // console.log(`unknown asset type: ${path}`);
-          }
-        }
+      }
+
+      // obj
+      if (this.endsWith(path, this.settings.objExtensions)) {
+        this.OBJLoader.load(path, (obj) => {
+          this.app[variable] = obj;
+        });
+      }
+
+      // texture
+      if (this.endsWith(path, this.settings.textureExtensions)) {
+        this.TextureLoader.load(path, (texture) => {
+          this.app[variable] = texture;
+          this.setUpTexture(this.app[variable]);
+        });
       }
     }
+  }
+  endsWith(path, arr) {
+    return arr.some((extension) => path.endsWith(extension));
   }
   setUpTexture(texture) {
     texture = this.THREE.sRGBEncoding;
