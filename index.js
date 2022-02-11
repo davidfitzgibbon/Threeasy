@@ -68,6 +68,12 @@ export default class Threeasy {
       this.init();
     }
   }
+  postload(fn) {
+    this.postLoader.add(fn);
+  }
+  animate(fn) {
+    this.animator.add(fn);
+  }
   init() {
     this.postLoader.load();
     this.animator.animate();
