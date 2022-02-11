@@ -1,6 +1,6 @@
 {
   "name": "threeasy",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A wrapper and some sensible defaults to make the early stages of learning ThreeJS easier",
   "main": "build/threeasy.js",
   "scripts": {
