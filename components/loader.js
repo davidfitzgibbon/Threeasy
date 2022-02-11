@@ -68,9 +68,9 @@ class ThreeasyLoader {
     return arr.some((extension) => path.endsWith(extension));
   }
   setUpTexture(texture) {
-    texture = this.THREE.sRGBEncoding;
-    texture = this.THREE.RepeatWrapping;
-    texture = this.THREE.RepeatWrapping;
+    texture.encoding = this.THREE.sRGBEncoding;
+    texture.wrapT = this.THREE.RepeatWrapping;
+    texture.wrapS = this.THREE.RepeatWrapping;
   }
 }
 export default ThreeasyLoader;
