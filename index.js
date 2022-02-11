@@ -25,7 +25,7 @@ export default class Threeasy {
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.physicallyCorrectLights = true;
     this.renderer.outputEncoding = THREE.sRGBEncoding;
-    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this.renderer.toneMapping = THREE.ReinhardToneMapping;
     // CAMERA
     this.camera = new THREE.PerspectiveCamera(
       75,
@@ -43,7 +43,7 @@ export default class Threeasy {
     this.postLoader = new ThreeasyPostLoader(this);
     // LIGHT
     if (this.settings.light) {
-      this.light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
+      this.light = new THREE.AmbientLight(0xffffff, 1);
       this.scene.add(this.light);
     }
     // CLOCK
