@@ -1,9 +1,9 @@
 export default class ThreeasyComponent {
   constructor(app) {
     this.app = app;
-    this.app.animator.add(this.animation.bind(this));
+    this.app.animate(this.animate.bind(this));
   }
-  animation() {
+  animate() {
     return false;
   }
 }
