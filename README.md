@@ -14,4 +14,4 @@ Pull the starter repo, and run!
 
 ## Documentation
 
-Over at (https://threeasy.org)[https://threeasy.org]
+Over at https://threeasy.org
