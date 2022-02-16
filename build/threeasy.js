@@ -9,7 +9,11 @@ class ThreeasyAnimator {
   animate() {
     requestAnimationFrame(this.animate.bind(this));
     this.tasks.forEach((task) => task());
-    this.app.renderer.render(this.app.scene, this.app.camera);
+    if (this.app.render) {
+      this.app.render();
+    } else {
+      this.app.renderer.render(this.app.scene, this.app.camera);
+    }
   }
 }
 
@@ -177,13 +181,20 @@ class Threeasy {
     this.postLoader.load();
     this.animator.animate();
   }
-  onWindowResize() {
+  defaultResize() {
     this.setSize();
 
     this.camera.aspect = this.sizes.w / this.sizes.h;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(this.sizes.w, this.sizes.h);
     this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
+  }
+  onWindowResize() {
+    if (this.resize) {
+      this.resize();
+    } else {
+      this.defaultResize();
+    }
   }
 }
 
