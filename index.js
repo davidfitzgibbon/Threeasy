@@ -25,7 +25,7 @@ export default class Threeasy {
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.physicallyCorrectLights = true;
     this.renderer.outputEncoding = THREE.sRGBEncoding;
-    this.renderer.toneMapping = THREE.ReinhardToneMapping;
+
     // CAMERA
     this.camera = new THREE.PerspectiveCamera(
       75,
