@@ -9,11 +9,8 @@ class ThreeasyAnimator {
   animate() {
     requestAnimationFrame(this.animate.bind(this));
     this.tasks.forEach((task) => task());
-    if (this.app.render) {
-      this.app.render();
-    } else {
-      this.app.renderer.render(this.app.scene, this.app.camera);
-    }
+
+    this.app.render();
   }
 }
 
@@ -62,22 +59,34 @@ class ThreeasyLoader {
 
       // gltf
       if (this.endsWith(path, this.settings.gltfExtensions)) {
-        this.GLTFLoader.load(path, (gltf) => {
-          this.app[variable] = gltf.scene;
-        });
+        if (this.GLTFLoader) {
+          this.GLTFLoader.load(path, (gltf) => {
+            this.app.models[variable] = gltf.scene;
+          });
+        } else {
+          console.warn(
+            `ThreeasyLoader: GLTFLoader is not defined trying to load: ${path}`
+          );
+        }
       }
 
       // obj
       if (this.endsWith(path, this.settings.objExtensions)) {
-        this.OBJLoader.load(path, (obj) => {
-          this.app[variable] = obj;
-        });
+        if (this.OBJLoader) {
+          this.OBJLoader.load(path, (obj) => {
+            this.app.models[variable] = obj;
+          });
+        } else {
+          console.warn(
+            `ThreeasyLoader: OBJLoader is not defined trying to load: ${path}`
+          );
+        }
       }
 
       // texture
       if (this.endsWith(path, this.settings.textureExtensions)) {
         this.TextureLoader.load(path, (texture) => {
-          this.app[variable] = texture;
+          this.app.textures[variable] = texture;
           this.setUpTexture(this.app[variable]);
         });
       }
@@ -106,8 +115,20 @@ class ThreeasyPostLoader {
   }
 }
 
-// 16.6
+/**
+ * Threeasy class
+ * @class Threeasy
+ */
 class Threeasy {
+  /**
+   *
+   * @param {THREE} THREE
+   * @param {boolean} settings.light - Whether to add a light to the scene.
+   * @param {any} settings.preload - An object defining texture, .glb or .GLTF files to preload.
+   * @param {GLTFLoader} settings.GLTFLoader - A ThreeJS GLTFLoader, if loading .glb or .gltf.
+   * @param {any} models - An object containing models that have loaded.
+   * @param {object} textures - An object containing textures that have loaded.
+   */
   constructor(THREE, settings) {
     this.settings = {
       light: true,
@@ -120,15 +141,7 @@ class Threeasy {
     this.animator = new ThreeasyAnimator(this);
     // SCENE
     this.scene = new THREE.Scene();
-    // RENDERER
-    this.renderer = new THREE.WebGLRenderer({ antialias: true });
-    this.renderer.setSize(this.sizes.w, this.sizes.h);
-    this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
-    this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    this.renderer.physicallyCorrectLights = true;
-    this.renderer.outputEncoding = THREE.sRGBEncoding;
-    this.renderer.toneMapping = THREE.ReinhardToneMapping;
+
     // CAMERA
     this.camera = new THREE.PerspectiveCamera(
       75,
@@ -140,7 +153,20 @@ class Threeasy {
     this.camera.position.y = 0;
     this.camera.position.z = 2;
     this.scene.add(this.camera);
+
+    // RENDERER
+    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer.setSize(this.sizes.w, this.sizes.h);
+    this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.physicallyCorrectLights = true;
+    this.renderer.outputEncoding = THREE.sRGBEncoding;
+    this.renderer.toneMapping = THREE.AESCFilmicToneMapping;
+
     // LOADER
+    this.models = {};
+    this.textures = {};
     this.loader = new ThreeasyLoader(this);
     // POSTLOADER
     this.postLoader = new ThreeasyPostLoader(this);
@@ -153,6 +179,7 @@ class Threeasy {
     this.clock = new THREE.Clock();
     this.clock.start();
     // RESIZE
+    this.resize = false;
     document.body.appendChild(this.renderer.domElement);
     window.addEventListener("resize", this.onWindowResize.bind(this), false);
     // PRELOAD
@@ -171,9 +198,28 @@ class Threeasy {
       this.init();
     }
   }
+  /**
+   *
+   * @param {function} fn
+   * @returns {void}
+   */
   postload(fn) {
     this.postLoader.add(fn);
   }
+
+  /**
+   * @type {function} - A function to replace the default ThreeJS render function. EG for post processing
+   * @returns {void}
+   */
+  render() {
+    this.renderer.render(this.scene, this.camera);
+  }
+
+  /**
+   *
+   * @param {function} fn
+   * @returns {void}
+   */
   animate(fn) {
     this.animator.add(fn);
   }
@@ -181,7 +227,12 @@ class Threeasy {
     this.postLoader.load();
     this.animator.animate();
   }
-  defaultResize() {
+
+  /**
+   * @type {function} resize - A function to replace the default Threeasy resize function.
+   * @returns {void}
+   */
+  resize() {
     this.setSize();
 
     this.camera.aspect = this.sizes.w / this.sizes.h;
@@ -190,11 +241,7 @@ class Threeasy {
     this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
   }
   onWindowResize() {
-    if (this.resize) {
-      this.resize();
-    } else {
-      this.defaultResize();
-    }
+    this.resize();
   }
 }
 

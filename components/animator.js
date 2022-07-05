@@ -9,11 +9,8 @@ class ThreeasyAnimator {
   animate() {
     requestAnimationFrame(this.animate.bind(this));
     this.tasks.forEach((task) => task());
-    if (this.app.render) {
-      this.app.render();
-    } else {
-      this.app.renderer.render(this.app.scene, this.app.camera);
-    }
+
+    this.app.render();
   }
 }
 export default ThreeasyAnimator;

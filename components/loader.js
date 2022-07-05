@@ -43,22 +43,34 @@ class ThreeasyLoader {
 
       // gltf
       if (this.endsWith(path, this.settings.gltfExtensions)) {
-        this.GLTFLoader.load(path, (gltf) => {
-          this.app[variable] = gltf.scene;
-        });
+        if (this.GLTFLoader) {
+          this.GLTFLoader.load(path, (gltf) => {
+            this.app.models[variable] = gltf.scene;
+          });
+        } else {
+          console.warn(
+            `ThreeasyLoader: GLTFLoader is not defined trying to load: ${path}`
+          );
+        }
       }
 
       // obj
       if (this.endsWith(path, this.settings.objExtensions)) {
-        this.OBJLoader.load(path, (obj) => {
-          this.app[variable] = obj;
-        });
+        if (this.OBJLoader) {
+          this.OBJLoader.load(path, (obj) => {
+            this.app.models[variable] = obj;
+          });
+        } else {
+          console.warn(
+            `ThreeasyLoader: OBJLoader is not defined trying to load: ${path}`
+          );
+        }
       }
 
       // texture
       if (this.endsWith(path, this.settings.textureExtensions)) {
         this.TextureLoader.load(path, (texture) => {
-          this.app[variable] = texture;
+          this.app.textures[variable] = texture;
           this.setUpTexture(this.app[variable]);
         });
       }
