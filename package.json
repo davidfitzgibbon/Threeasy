@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "rollup -c -w",
     "push": "yalc push",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "pub": "npm publish"
   },
   "type": "module",
   "repository": {
