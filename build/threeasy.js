@@ -61,7 +61,7 @@ class ThreeasyLoader {
       if (this.endsWith(path, this.settings.gltfExtensions)) {
         if (this.GLTFLoader) {
           this.GLTFLoader.load(path, (gltf) => {
-            this.app.models[variable] = gltf.scene;
+            this.app[variable] = gltf.scene;
           });
         } else {
           console.warn(
@@ -74,7 +74,7 @@ class ThreeasyLoader {
       if (this.endsWith(path, this.settings.objExtensions)) {
         if (this.OBJLoader) {
           this.OBJLoader.load(path, (obj) => {
-            this.app.models[variable] = obj;
+            this.app[variable] = obj;
           });
         } else {
           console.warn(
@@ -86,7 +86,7 @@ class ThreeasyLoader {
       // texture
       if (this.endsWith(path, this.settings.textureExtensions)) {
         this.TextureLoader.load(path, (texture) => {
-          this.app.textures[variable] = texture;
+          this.app[variable] = texture;
           this.setUpTexture(this.app[variable]);
         });
       }
@@ -162,7 +162,7 @@ class Threeasy {
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.physicallyCorrectLights = true;
     this.renderer.outputEncoding = THREE.sRGBEncoding;
-    this.renderer.toneMapping = THREE.AESCFilmicToneMapping;
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
 
     // LOADER
     this.models = {};
@@ -179,7 +179,6 @@ class Threeasy {
     this.clock = new THREE.Clock();
     this.clock.start();
     // RESIZE
-    this.resize = false;
     document.body.appendChild(this.renderer.domElement);
     window.addEventListener("resize", this.onWindowResize.bind(this), false);
     // PRELOAD

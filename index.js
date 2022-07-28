@@ -50,7 +50,7 @@ export default class Threeasy {
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.physicallyCorrectLights = true;
     this.renderer.outputEncoding = THREE.sRGBEncoding;
-    this.renderer.toneMapping = THREE.AESCFilmicToneMapping;
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
 
     // LOADER
     this.models = {};
@@ -67,7 +67,6 @@ export default class Threeasy {
     this.clock = new THREE.Clock();
     this.clock.start();
     // RESIZE
-    this.resize = false;
     document.body.appendChild(this.renderer.domElement);
     window.addEventListener("resize", this.onWindowResize.bind(this), false);
     // PRELOAD
