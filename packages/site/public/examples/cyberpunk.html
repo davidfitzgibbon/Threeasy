@@ -1,0 +1,238 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+
+    <title>Cyberpunk</title>
+
+    <meta
+      name="description"
+      content="A light wrapper around ThreeJS to make learning easier."
+    />
+    <meta property="og:title" content="Cyberpunk" />
+    <meta
+      property="og:description"
+      content="A light wrapper around ThreeJS to make learning easier."
+    />
+    <meta property="og:image" content="https://threeasy.org/imgs/social.jpg" />
+    <meta
+      property="og:image:alt"
+      content="A light wrapper around ThreeJS to make learning easier."
+    />
+    <meta property="og:locale" content="en_IE" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:url" content="https://threeasy.org/" />
+    <link rel="canonical" href="https://threeasy.org/" />
+  </head>
+
+  <body style="margin: 0">
+    <style>
+      @import url("https://fonts.googleapis.com/css?family=Raleway:400,400i,700");
+
+      body,
+      html {
+        margin: 0;
+        height: 100vh;
+      }
+
+      canvas {
+        width: 100%;
+        height: 100%;
+      }
+
+      h1 {
+        position: absolute;
+        bottom: 1em;
+        left: 0;
+        right: 0;
+        text-align: center;
+        z-index: 1;
+        font-size: 20px;
+        font-family: Raleway, sans-serif;
+        font-weight: normal;
+        mix-blend-mode: difference;
+        color: white;
+      }
+
+      a {
+        color: white;
+      }
+    </style>
+    <h1>
+      By Leif. Check out his
+      <a target="_blank" href="https://leifs.website/">website</a> and
+      <a target="_blank" href="https://github.com/leifniem">github</a>
+    </h1>
+    <script type="module">
+      import * as THREE from "https://unpkg.com/three@0.120.1/build/three.module.js";
+      import { GLTFLoader } from "https://unpkg.com/three@0.120.1/examples/jsm/loaders/GLTFLoader";
+      import { EffectComposer } from "https://unpkg.com/three@0.120.1/examples/jsm/postprocessing/EffectComposer";
+      import { ShaderPass } from "https://unpkg.com/three@0.120.1/examples/jsm/postprocessing/ShaderPass";
+      import { RenderPass } from "https://unpkg.com/three@0.120.1/examples/jsm/postprocessing/RenderPass";
+      import { FontLoader } from "./libs/loaders/FontLoader.js";
+      import { TextGeometry } from "./libs/geometries/TextGeometry.js";
+      import Threeasy from "https://unpkg.com/threeasy";
+
+      const app = new Threeasy(THREE, {
+        preload: {
+          mask: "/examples/models/mask.glb",
+        },
+        GLTFLoader,
+      });
+
+      app.camera = new THREE.PerspectiveCamera(
+        60,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      app.camera.position.set(0, 0, 2);
+      app.renderer.setClearColor("#1c2fff");
+
+      const mat = new THREE.ShaderMaterial({
+        uniforms: {
+          mouse: { value: new THREE.Vector2(0, 0) },
+        },
+        vertexShader: /* glsl */ `
+      varying vec2 vUv;
+      varying vec3 vNormal;
+      void main() {
+        vUv = uv;
+        vNormal = normal;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+      `,
+        fragmentShader: /* glsl */ `
+      varying vec2 vUv;
+      varying vec3 vNormal;
+      uniform float time;
+      uniform vec2 mouse;
+      void main() {
+        vec2 uv = vUv;
+        vec3 normal = sin(vNormal + 4. + mouse.x * 1. + mouse.y * 1.);
+        normal = normal * normal;
+        vec3 color = vec3(0.0);
+        gl_FragColor = vec4(normal, 1.);
+      }
+      `,
+      });
+
+      app.text = false;
+      const fontLoader = new FontLoader(app.loader.manager);
+      fontLoader.load("/examples/fonts/font.json", (font) => {
+        app.text = new THREE.Mesh(
+          new TextGeometry("CYBERPUNK", {
+            font,
+            size: 1,
+            height: 0,
+            curveSegments: 12,
+          }),
+          new THREE.MeshBasicMaterial({
+            color: THREE.Color.white,
+            toneMapped: false,
+          })
+        );
+        app.text.position.set(-4, 0, -4);
+        app.text.rotation.set(0, 0, 0);
+        app.scene.add(app.text);
+      });
+
+      const post = new EffectComposer(app.renderer);
+      const renderPass = new RenderPass(app.scene, app.camera);
+      post.addPass(renderPass);
+      const glitchPass = new ShaderPass(
+        new THREE.ShaderMaterial({
+          uniforms: {
+            tDiffuse: { value: null },
+            time: { value: 0 },
+            mouse: { value: new THREE.Vector2() },
+          },
+          vertexShader: /* glsl */ `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+        `,
+          fragmentShader: /* glsl */ `
+        varying vec2 vUv;
+        uniform float time;
+        uniform vec2 mouse;
+        uniform sampler2D tDiffuse;
+
+        float rand(vec2 co){
+          return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
+        }
+
+        void main() {
+          float offset = pow(sin((vUv.y + time * mouse.x / 2.) * 3.14) * .5 + .5 , 1000.) * .1
+          + pow(cos((vUv.y + time * mouse.y / 2.) * 3.14) * .5 + .5 , 200.) * -.1;
+          vec4 noise = vec4(
+            vec3(
+              rand(vUv + time) * 2. - 1.,
+              rand(vUv + sin(time)) * 2. - 1.,
+              rand(vUv + cos(time)) * 2. - 1.
+              ),
+              0.
+              ) * .15;
+              vec4 color = vec4(1.);
+              color.r = texture2D(tDiffuse, vec2(vUv.x + offset * sin(time), vUv.y)).r + noise.r;
+              color.g = texture2D(tDiffuse, vec2(vUv.x + offset * sin(time), vUv.y)).g + noise.g;
+              color.b = texture2D(tDiffuse, vec2(vUv.x + offset * tan(time), vUv.y)).b + noise.b;
+              gl_FragColor = color;
+            }
+            `,
+        })
+      );
+      post.addPass(glitchPass);
+
+      app.postload(() => {
+        app.mask.children[0].material = mat;
+        app.mask.rotation.set(0, Math.PI * 0.8, 0);
+        app.scene.add(app.mask);
+        app.mask.position.set(-0.05, 0, 0.75);
+      });
+
+      const clock = new THREE.Clock();
+      clock.start();
+
+      let time = 0;
+      app.animate(() => {
+        time = clock.getElapsedTime();
+        app.mask.position.y = Math.sin(time * 0.5) * 0.1;
+        glitchPass.uniforms.time.value = time;
+        if (app.text) {
+          if (time % 4 < 0.05 && Math.random() > 0.5) {
+            app.text.material.wireframe = !app.text.material.wireframe;
+          }
+        }
+        if (time % 3 < 0.05) {
+          Math.random() > 0.8
+            ? app.renderer.setClearColor(Math.random() * 0xffffff)
+            : app.renderer.setClearColor("#1c2fff");
+        }
+      });
+
+      app.render = () => post.render();
+
+      document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener("mousemove", (e) => {
+          // console.log(e);
+          glitchPass.uniforms.mouse.value.set(
+            e.offsetX / window.innerWidth,
+            e.offsetY / window.innerHeight
+          );
+          mat.uniforms.mouse.value.set(
+            e.offsetX / window.innerWidth,
+            e.offsetY / window.innerHeight
+          );
+        });
+      });
+    </script>
+  </body>
+</html>

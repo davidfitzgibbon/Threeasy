@@ -1,0 +1,58 @@
+---	
+import Page from '../layouts/Page.astro';
+
+const links = [
+  {
+    name: "Import a texture",
+    slug: "importing-textures"
+  },
+  {
+    name: "Import a model - gltf",
+    slug: "import-glb"
+  },
+  {
+    name: "Threeasy Component",
+    slug: "components"
+  },
+  {
+    name: "Motion Graphics I",
+    slug: "motion-graphics-1"
+  },
+  {
+    name: "Motion Graphics II",
+    slug: "motion-graphics-2"
+  },
+  {
+    name: "Cyberpunk",
+    slug: "cyberpunk"
+  },
+  {
+    name: "Swimming Fish",
+    slug: "swimming-fish"
+  },
+  {
+    name: "Wriggle Loop",
+    slug: "wriggleloop"
+  },
+]
+---
+
+<Page title="Examples">
+  {links.map(link => {
+  const src = `imgs/examples/${link.slug}.jpeg`;
+  const url = `examples/${link.slug}.html`
+  return (
+  <p>
+    <a href={url} target="_blank">
+      <img src={src} alt={link.name} />
+      {link.name}</a>
+  </p>
+  )
+  })}
+</Page>
+
+<style>
+  img {
+    width: 100%;
+  }
+</style>

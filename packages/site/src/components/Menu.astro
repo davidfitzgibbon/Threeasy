@@ -1,0 +1,94 @@
+<div class="menu">
+  <input type="checkbox" name="toggler" id="toggler">
+  <nav>
+    <ul>
+      <li><a href="/quick-start">Quick Start</a></li>
+      <li><a href="/">Why Threeasy?</a></li>
+      <li><a href="/inline-animations">Inline Animations</a></li>
+      <li><a href="/threeasy-components">Threeasy Components</a></li>
+      <li><a href="/importing-textures">Importing Textures</a></li>
+      <li><a href="/importing-models">Importing Models</a></li>
+      <li><a href="/using-other-threejs-functionality">Accessing Other ThreeJS Functionality</a></li>
+      <li><a href="/accessing-top-level-variables">Accessing Top Level ThreeJS Variables</a></li>
+      <li><a href="/renderer">Changing Renderer</a></li>
+      <li><a class="bold" href="/examples">Examples</a></li>
+    </ul>
+  </nav>
+  <label for="toggler" class="open">
+    <svg  viewBox="0 0 50 50">
+      <rect x="0" y="0" width="50" height="10" />
+      <rect x="0" y="40" width="50" height="10" />
+      <rect x="0" y="20" width="50" height="10" />
+    </svg>
+  </label>
+  <label for="toggler" class="close">&cross;</label>
+</div>
+
+<style>
+  .menu {
+    position: absolute;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    pointer-events: none;
+  }
+  #toggler {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 0%;
+    display: none;
+  }
+  #toggler:checked  + nav{
+    opacity: 1;
+    pointer-events: all;
+  }
+  nav {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s;
+    background: var(--gray-0);
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  nav ul {
+    overflow: hidden;
+  }
+  nav li {
+    margin: 1.5rem 0;
+  }
+  .open,
+  .close {
+    position: absolute;
+    top: .5rem;
+    right: 1.5rem;
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+    font-size: 2rem;
+    text-align: right;
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: all;
+  }
+  #toggler:checked  ~ .close {
+    opacity: 1;
+  }
+  #toggler:not(:checked)  ~ .open {
+    opacity: 1;
+  }
+  .close,
+  .open rect {
+    fill: var(--gray-5);
+    color: var(--gray-5);
+  }
+</style>

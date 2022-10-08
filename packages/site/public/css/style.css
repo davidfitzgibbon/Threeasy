@@ -1,0 +1,92 @@
+@font-face {
+  font-family: "Inter";
+  font-weight: 100 900;
+  font-display: swap;
+  font-named-instance: "Regular";
+  src: url("/fonts/Inter.var.woff2") format("woff2");
+}
+:root {
+  --gray-0: #f8f9fa;
+  --gray-1: #f1f3f5;
+  --gray-2: #e9ecef;
+  --gray-3: #dee2e6;
+  --gray-4: #ced4da;
+  --gray-5: #adb5bd;
+  --gray-6: #868e96;
+  --gray-7: #495057;
+  --gray-8: #343a40;
+  --gray-9: #212529;
+}
+* {
+  font-family: "Inter", sans-serif;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  padding: 1rem 0;
+  background-color: var(--gray-0);
+  color: var(--gray-7);
+}
+@media (prefers-reduced-motion) {
+  * {
+    animation-duration: 0s !important;
+  }
+}
+a {
+  color: inherit;
+}
+.content {
+  position: relative;
+  padding: 0 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.main {
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr;
+  column-gap: 3rem;
+}
+main h1 {
+  margin-top: 2rem;
+  font-size: 3rem;
+  font-weight: 400;
+  margin-bottom: 1em;
+}
+main h2 {
+  margin-top: 2em;
+  font-weight: 500;
+  margin-bottom: 1em;
+}
+main h1 + h2 {
+  margin-top: 0em;
+}
+main p,
+main ul {
+  margin-bottom: 1.5rem;
+}
+main h1,
+main h2,
+main p,
+main ul {
+  grid-column-start: 2;
+  grid-column-end: 4;
+}
+.astro-code {
+  padding: 1.5em 2em;
+  border-radius: 0.5em;
+  grid-column-start: 1;
+  grid-column-end: 4;
+  margin-bottom: 1rem;
+}
+p code {
+  background: #eee;
+  padding: 0.05em 0.25em;
+  border: 1px solid #bbb;
+  border-radius: 0.25em;
+  display: inline;
+}
+.bold {
+  font-weight: 900;
+}

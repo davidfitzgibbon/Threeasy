@@ -1,0 +1,58 @@
+---	
+import { Code } from 'astro/components';
+import Markdown from '@astrojs/markdown-component';
+import Demo from '../components/Demo.svelte';
+import Page from '../layouts/Page.astro';
+import Waypoint from '../components/Waypoint.svelte';
+
+const code = `import * as THREE from "three";
+import Threeasy from "threeasy";
+const app=new Threeasy(THREE);
+
+const mat=new THREE.MeshBasicMaterial({ color: "white" });
+const geo=new THREE.BoxGeometry();
+
+const mesh=new THREE.Mesh(geo, mat);
+
+app.scene.add(mesh);
+`
+---
+
+<Page title="Threeasy">
+	<Markdown>
+		Threeasy is a wrapper around ThreeJS that lets you get set up fast, so you can get making things quicker!
+
+		## Quick start
+
+		You can follow the [quick start](/quick-start), or jump into the [examples](/examples).
+
+		## How does Threeasy work?
+
+		Threeasy wraps around ThreeJS doing all the boilerplate setup for you. It sets up and tidies away `Scene`, `Camera`,
+		`Renderer`, and animations for you. That means that new users have less distractions as the learn, and advanced
+		users can just get going quicker!
+
+
+		How much quicker is it? Here's everything you need to get a static cube on screen.
+
+		<Demo title="Basic Threeasy App" url="basic-threeasy">
+			<Code code={code} lang="js" />
+		</Demo>
+
+
+		What we've done here is initialised a new instance of `Threeasy`. This immediately set up the following for you.
+
+		- `Scene`
+		- `Renderer`
+		- `Camera`
+		- `Light`
+		- Animation Loop
+		- Loading Manager
+		- Resizing watcher
+
+		Then we set up a `material`, `geometry` and `mesh`, just like we normally would in ThreeJS. Then we add the mesh to
+		the `Scene`, which has been passed to us by Threeast as part of the `app` variable.
+
+	</Markdown>
+	<Waypoint next={{url:'/inline-animations',title:"Inline Animations"}} />
+</Page>

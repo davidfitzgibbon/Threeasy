@@ -1,0 +1,24 @@
+---	
+import { Code } from 'astro/components';
+import Markdown from '@astrojs/markdown-component';
+import Page from '../layouts/Page.astro';
+
+const command = `degit davidfitzgibbon/starterThreeasy myProject
+cd myProject
+npm i
+npm start`
+---
+
+<Page title="Quick Start">
+  <Markdown>
+    ## Online
+    Well hey there! You want to get started? You can [fork this
+    CodeSandbox](https://codesandbox.io/s/basic-threeasy-itr9e?file=/app.js)!
+
+    ## Locally
+    Or if you want to work locally, here's all you need to get up and running with Threeasy.
+
+    <Code code={command} lang="bash" />
+
+  </Markdown>
+</Page>

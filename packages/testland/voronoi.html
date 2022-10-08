@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>doodle</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="buttons">
+      <span class="prev">previous</span> ~
+      <span class="next">next</span>
+    </div>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        overflow: hidden;
+      }
+      .buttons {
+        position: absolute;
+        top: 50%;
+        transform: translateY(30vh);
+        text-align: center;
+        left: 0;
+        width: 100%;
+        font-size: 24px;
+        font-family: Garamond, Baskerville, "Baskerville Old Face",
+          "Hoefler Text", "Times New Roman", serif;
+        font-size: 24px;
+      }
+      span {
+        cursor: pointer;
+      }
+    </style>
+    <script src="https://unpkg.com/gsap@3.10.4/dist/gsap.js"></script>
+    <script type="module" src="/js/voronoi.js"></script>
+  </body>
+</html>
