@@ -132,8 +132,11 @@ class Threeasy {
   constructor(THREE, settings) {
     this.settings = {
       light: true,
+      alpha: false,
       ...settings,
     };
+
+    console.log(this.settings);
 
     this.THREE = THREE;
     this.setSize();
@@ -155,7 +158,10 @@ class Threeasy {
     this.scene.add(this.camera);
 
     // RENDERER
-    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: this.settings.alpha,
+    });
     this.renderer.setSize(this.sizes.w, this.sizes.h);
     this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
     this.renderer.shadowMap.enabled = true;
