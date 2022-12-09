@@ -40,11 +40,11 @@ importers:
 
   packages/testland:
     specifiers:
-      three: ^0.137.5
+      three: ^0.143.0
       threeasy: workspace:*
       vite: ^2.7.2
     dependencies:
-      three: 0.137.5
+      three: 0.143.0
       threeasy: link:../Threeasy
     devDependencies:
       vite: 2.9.15
@@ -4035,10 +4035,6 @@ packages:
       commander: 2.20.3
       source-map-support: 0.5.21
     dev: true
-
-  /three/0.137.5:
-    resolution: {integrity: sha512-rTyr+HDFxjnN8+N/guZjDgfVxgHptZQpf6xfL/Mo7a5JYIFwK6tAq3bzxYYB4Ae0RosDZlDuP+X5aXDXz+XnHQ==}
-    dev: false
 
   /three/0.143.0:
     resolution: {integrity: sha512-oKcAGYHhJ46TGEuHjodo2n6TY2R6lbvrkp+feKZxqsUL/WkH7GKKaeu6RHeyb2Xjfk2dPLRKLsOP0KM2VgT8Zg==}

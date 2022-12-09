@@ -7,7 +7,7 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"three": "^0.137.5",
+		"three": "^0.143.0",
 		"threeasy": "workspace:*"
 	},
 	"devDependencies": {
