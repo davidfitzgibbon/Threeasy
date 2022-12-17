@@ -1,9 +1,9 @@
----	
-import { Code } from 'astro/components';
-import Markdown from '@astrojs/markdown-component';
-import Demo from '../components/Demo.svelte';
-import Page from '../layouts/Page.astro';
-import Waypoint from '../components/Waypoint.svelte';
+---
+import { Code } from "astro/components";
+import Markdown from "@astrojs/markdown-component";
+import Demo from "../components/Demo.svelte";
+import Page from "../layouts/Page.astro";
+import Waypoint from "../components/Waypoint.svelte";
 
 const code1 = `import * as THREE from "https://unpkg.com/three@0.125.1/build/three.module.js";
 import ThreeasyComponent from "https://unpkg.com/threeasy@0.1.3/component.js";
@@ -17,10 +17,10 @@ export default class Box extends ThreeasyComponent {
     // animate
   }
 }
-`
+`;
 const code2 = `import myComponent from '/myComponent.js';
 const instance = new myComponent(app);
-`
+`;
 const code3 = `// APP.JS
 
 import * as THREE from "https://unpkg.com/three@0.125.1/build/three.module.js";
@@ -39,7 +39,7 @@ const boxes = [];
 for (let i = 0; i < 20; i++) {
   boxes.push(new Box(app));
 }
-`
+`;
 const code4 = `// BOX.JS
 
 import * as THREE from "https://unpkg.com/three@0.125.1/build/three.module.js";
@@ -70,39 +70,39 @@ export default class Box extends ThreeasyComponent {
     this.mesh.rotation.y += this.dir.y;
   }
 }
-`
+`;
 ---
 
-
-
 <Page title="Threeasy Components">
-<Markdown>
-  ThreeJS has no prescribed method of organising components. As a result, most demos dont use components. This makes most complicated demos very hard to read, because everything is competing with scope in one file.
+  <Markdown>
+    ThreeJS has no prescribed method of organising components. As a result, most
+    demos dont use components. This makes most complicated demos very hard to
+    read, because everything is competing with scope in one file. Threeasy has a
+    simple but opinionated `Component`. It encourages splitting functionality
+    into separeate files. This is how coding in the real world works. The
+    Threeasy `Component` is a class. In the `constructor` you can set the basic
+    state of an object. It also exposes an `animate()` function that is
+    automatically hooked up to the render loop for you. Here is the most basic
+    setup:
 
-	Threeasy has a simple but opinionated `Component`. It encourages splitting functionality into separeate files. This is how coding in the real world works.
+    <Code code={code1} lang="js" />
 
-  The Threeasy `Component` is a class. In the `constructor` you can set the basic state of an object. It also exposes an `animate()` function that is automatically hooked up to the render loop for you.
+    In App.js when you want to use the `Component`, you must pass the `app` to
+    it.
 
-  Here is the most basic setup:
+    <Code code={code2} lang="js" />
 
-  <Code code={code1} lang="js" />
+    ## Example 
+    
+    In this example a Box is created and animated. By storing the Box in its own file, things are much more legible, and easier for a newcomer to understand.
 
-  In App.js when you want to use the `Component`, you must pass the `app` to it.
-
-  <Code code={code2} lang="js" />
-
-  ## Example
-
-	In this example a Box is created and animated. By storing the Box in its own file, things are much more legible, and easier for a newcomer to understand.
-
-	<Demo title="Threeasy Components" url="components">
-    <Code code={code3} lang="js" />
-    <Code code={code4} lang="js" />
-  </Demo>
-	
-</Markdown>
-<Waypoint 
-  prev={{url:'/inline-animations',title:"Inline Animations"}}
-  next={{url:'/importing-textures',title:"Importing Textures"}}
-/>
+    <Demo title="Threeasy Components" url="components">
+      <Code code={code3} lang="js" />
+      <Code code={code4} lang="js" />
+    </Demo>
+  </Markdown>
+  <Waypoint
+    prev={{ url: "/inline-animations", title: "Inline Animations" }}
+    next={{ url: "/importing-textures", title: "Importing Textures" }}
+  />
 </Page>

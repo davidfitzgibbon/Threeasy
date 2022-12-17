@@ -1,9 +1,9 @@
----	
-import { Code } from 'astro/components';
-import Markdown from '@astrojs/markdown-component';
-import Demo from '../components/Demo.svelte';
-import Page from '../layouts/Page.astro';
-import Waypoint from '../components/Waypoint.svelte';
+---
+import { Code } from "astro/components";
+import Markdown from "@astrojs/markdown-component";
+import Demo from "../components/Demo.svelte";
+import Page from "../layouts/Page.astro";
+import Waypoint from "../components/Waypoint.svelte";
 
 const code = `import * as THREE from "https://unpkg.com/three@0.125.1/build/three.module.js";
 import { GLTFLoader } from "https://unpkg.com/three@0.125.1/examples/jsm/loaders/GLTFLoader.js";
@@ -24,28 +24,29 @@ app.scene.background = new THREE.Color("dodgerblue");
 
 app.postload(() => {
   app.scene.add(app.trophy);
-  app.animate(() => {
+  app.animator.add(() => {
     app.trophy.rotation.y += 0.01;
   });
 });
-`
+`;
 ---
 
 <Page title="Importing Models">
   <Markdown>
-
-    At present only GLTF is supported
-
-    To import a model you need to follow the same preload routine as with a texture. However, as with a regular ThreeJS
-    project, we need to import the GLTFLoader. Passing this in the settings object to Threeasy will have it set up all
-    your loading needs.
+    At present only GLTF is supported To import a model you need to follow the
+    same preload routine as with a texture. However, as with a regular ThreeJS
+    project, we need to import the GLTFLoader. Passing this in the settings
+    object to Threeasy will have it set up all your loading needs.
 
     <Demo title="Import trophy GLTF" url="import-glb">
       <Code code={code} lang="js" />
     </Demo>
-
-
   </Markdown>
-  <Waypoint prev={{url:'/importing-textures',title:"Importing Textures"}}
-    next={{url:'/using-other-threejs-functionality',title:"Using Other ThreeJS Functionality"}} />
+  <Waypoint
+    prev={{ url: "/importing-textures", title: "Importing Textures" }}
+    next={{
+      url: "/using-other-threejs-functionality",
+      title: "Using Other ThreeJS Functionality",
+    }}
+  />
 </Page>

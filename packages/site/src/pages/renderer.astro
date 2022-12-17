@@ -1,8 +1,8 @@
----	
-import { Code } from 'astro/components';
-import Markdown from '@astrojs/markdown-component';
-import Demo from '../components/Demo.svelte';
-import Page from '../layouts/Page.astro';
+---
+import { Code } from "astro/components";
+import Markdown from "@astrojs/markdown-component";
+import Demo from "../components/Demo.svelte";
+import Page from "../layouts/Page.astro";
 
 const code = `import * as THREE from "three";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
@@ -29,7 +29,7 @@ composer.addPass(effect1);
 // THIS RESETS THE RENDERER AND ADDS IT TO THE RENDER LOOP
 app.render = () => composer.render();
 
-app.animate(() => {
+app.animator.add(() => {
   mesh.rotation.y += 0.01;
 });
 
@@ -39,15 +39,13 @@ app.scene.add(mesh);
 
 <Page title="Changing Renderer">
   <Markdown>
-
-    Threeasy automatically sets up the default `THREE Renderer` for you. But you're not limited to that, you can simply
-    change it.
-
-    To update the function that is used to render the scene, you can pass a new function to `app.render`.
+    Threeasy automatically sets up the default `THREE Renderer` for you. But
+    you're not limited to that, you can simply change it. To update the function
+    that is used to render the scene, you can pass a new function to
+    `app.render`.
 
     <Demo title="Import crate texture" url="change-renderer">
       <Code code={code} lang="js" />
     </Demo>
-
   </Markdown>
 </Page>

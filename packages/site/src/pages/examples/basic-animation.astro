@@ -13,7 +13,7 @@ import Example from "../../layouts/Example.astro";
     const geo = new THREE.BoxGeometry();
 
     const mesh = new THREE.Mesh(geo, mat);
-    app.animate(() => (mesh.rotation.y += 0.01));
+    app.animator.add(() => (mesh.rotation.y += 0.01));
 
     app.scene.add(mesh);
   </script>
