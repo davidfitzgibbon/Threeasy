@@ -1,6 +1,7 @@
 import ThreeasyAnimator from "./components/animator";
 import ThreeasyLoader from "./components/loader";
 import ThreeasyPostLoader from "./components/postLoader";
+import ThreeasyInteractions from "./components/interactions";
 import ThreeasyComponent from "./component";
 
 /**
@@ -21,6 +22,7 @@ export default class Threeasy {
 		this.settings = {
 			light: true,
 			alpha: false,
+			interactions: false,
 			...settings,
 		};
 
@@ -57,6 +59,13 @@ export default class Threeasy {
 		this.renderer.physicallyCorrectLights = true;
 		this.renderer.outputEncoding = THREE.sRGBEncoding;
 		this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+
+		// INTERACTIONS
+		this.mouse = {
+			x: null,
+			y: null,
+		};
+		this.interactions = new ThreeasyInteractions(this);
 
 		// LOADER
 		this.models = {};

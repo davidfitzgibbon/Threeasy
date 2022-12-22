@@ -1,0 +1,69 @@
+---
+import { Code } from "astro/components";
+import Markdown from "@astrojs/markdown-component";
+import Demo from "../components/Demo.svelte";
+import Page from "../layouts/Page.astro";
+import Waypoint from "../components/Waypoint.svelte";
+
+const clickCode = /*js*/ `import * as THREE from "three";
+import Threeasy from "threeasy";
+
+const box = new THREE.BoxGeometry(1, 1, 1);
+const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+const cube = new THREE.Mesh(box, material);
+
+// add a click listener to the cube
+app.interactions.onClick(cube, (e) => {
+	cube.material.color = new THREE.Color(0x0000ff);
+});
+
+app.scene.add(cube);
+`;
+const hoverCode = /*js*/ `import * as THREE from "three";
+import Threeasy from "threeasy";
+
+const box = new THREE.BoxGeometry(1, 1, 1);
+const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+const cube = new THREE.Mesh(box, material);
+
+app.interactions.onHover(cube, {
+	enter: (e) => {
+		cube.material.color = new THREE.Color(0xff00ff);
+	},
+	leave: (e) => {
+		cube.material.color = new THREE.Color(0xffff00);
+	},
+});
+app.scene.add(cube);
+`;
+---
+
+<Page title="Interactions">
+  <Markdown>
+    Often you'll want to add some interactivity to your scene. Threeasy provides a few helper functions to make this easier.
+
+    ## Click
+
+    To add a click, we need to add two things to the interactions manager.
+
+    First, the object we want to listen to. In this case, we'll use a cube.
+
+    Second, the callback function. This function will be called when the object is clicked.
+
+    <Demo title="Threeasy Interactions - Click" url="interactions-click">
+      <Code code={clickCode} lang="js" />
+    </Demo>
+
+    ## Hover
+
+    To add hover events we also add the object and a callback function. However, this time we pass an object with two functions, enter and leave.
+
+    <Demo title="Threeasy Interactions - Hover" url="interactions-hover">
+      <Code code={hoverCode} lang="js" />
+    </Demo>
+  </Markdown>
+  <Waypoint
+    prev={{ url: "/", title: "Why Threeasy?" }}
+    next={{ url: "/threeasy-components", title: "Threeasy Components" }}
+  />
+</Page>
