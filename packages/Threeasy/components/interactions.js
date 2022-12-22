@@ -1,5 +1,3 @@
-import * as THREE from "three";
-
 class ThreeasyInteractions {
 	constructor(app) {
 		this.app = app;
@@ -7,8 +5,8 @@ class ThreeasyInteractions {
 		this.hovers = [];
 
 		if (this.app.settings.interactions) {
-			this.raycaster = new THREE.Raycaster();
-			this.pointer = new THREE.Vector2();
+			this.raycaster = new app.THREE.Raycaster();
+			this.pointer = new app.THREE.Vector2();
 			this.app.mouse = this.pointer;
 			this.interactions();
 		}
