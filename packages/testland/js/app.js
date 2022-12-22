@@ -1,4 +1,3 @@
-// @ts-check
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
@@ -10,11 +9,34 @@ import { SobelOperatorShader } from "three/examples/jsm/shaders/SobelOperatorSha
 
 import Threeasy from "threeasy";
 
-const app = new Threeasy(THREE);
+window.app = new Threeasy(THREE, { interactions: true });
 
 const box = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 const cube = new THREE.Mesh(box, material);
+
+let cubePos = 0;
+app.animator.add(() => {
+	// cube.rotation.y += 0.01;
+	if (!cube.hovered) {
+		cubePos += 0.01;
+		cube.position.x = Math.sin(cubePos);
+		cube.position.y = Math.cos(cubePos);
+	}
+});
+app.interactions.onClick(cube, (e) => {
+	cube.material.color = new THREE.Color(0x0000ff);
+});
+app.interactions.onHover(cube, {
+	enter: (e) => {
+		console.log("hovered cube");
+		cube.material.color = new THREE.Color(0xff00ff);
+	},
+	leave: (e) => {
+		console.log("UNhovered cube");
+		cube.material.color = new THREE.Color(0xffff00);
+	},
+});
 app.scene.add(cube);
 
 // import fragment from "./fragment.js";
