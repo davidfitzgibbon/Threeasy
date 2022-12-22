@@ -85,7 +85,6 @@ class ThreeasyInteractions {
 	}
 	onClick(el, fn) {
 		this.clicks.push({ el, fn });
-		console.log(this.clicks);
 	}
 	onHover(el, fns) {
 		el.hovered = false;
