@@ -1,67 +1,67 @@
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 
-    <title>Change Renderer</title>
+		<title>Change Renderer</title>
 
-    <meta
-      name="description"
-      content="A light wrapper around ThreeJS to make learning easier."
-    />
-    <meta property="og:title" content="Change Renderer" />
-    <meta
-      property="og:description"
-      content="A light wrapper around ThreeJS to make learning easier."
-    />
-    <meta property="og:image" content="https://threeasy.org/imgs/social.jpg" />
-    <meta
-      property="og:image:alt"
-      content="A light wrapper around ThreeJS to make learning easier."
-    />
-    <meta property="og:locale" content="en_IE" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta property="og:url" content="https://threeasy.org/" />
-    <link rel="canonical" href="https://threeasy.org/" />
-  </head>
+		<meta
+			name="description"
+			content="A light wrapper around ThreeJS to make learning easier."
+		/>
+		<meta property="og:title" content="Change Renderer" />
+		<meta
+			property="og:description"
+			content="A light wrapper around ThreeJS to make learning easier."
+		/>
+		<meta property="og:image" content="https://threeasy.org/imgs/social.jpg" />
+		<meta
+			property="og:image:alt"
+			content="A light wrapper around ThreeJS to make learning easier."
+		/>
+		<meta property="og:locale" content="en_IE" />
+		<meta property="og:type" content="website" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta property="og:url" content="https://threeasy.org/" />
+		<link rel="canonical" href="https://threeasy.org/" />
+	</head>
 
-  <body style="margin: 0">
-    <script type="module">
-      import * as THREE from "https://unpkg.com/three@0.120.1/build/three.module.js";
-      import { EffectComposer } from "https://unpkg.com/three@0.120.1/examples/jsm/postprocessing/EffectComposer.js";
-      import { RenderPass } from "https://unpkg.com/three@0.120.1/examples/jsm/postprocessing/RenderPass.js";
-      import { ShaderPass } from "https://unpkg.com/three@0.120.1/examples/jsm/postprocessing/ShaderPass.js";
-      import { DotScreenShader } from "https://unpkg.com/three@0.120.1/examples/jsm/shaders/DotScreenShader.js";
-      import Threeasy from "https://unpkg.com/threeasy";
+	<body style="margin: 0">
+		<script type="module">
+			import * as THREE from "https://unpkg.com/three@0.120.1/build/three.module.js";
+			import { EffectComposer } from "https://unpkg.com/three@0.120.1/examples/jsm/postprocessing/EffectComposer.js";
+			import { RenderPass } from "https://unpkg.com/three@0.120.1/examples/jsm/postprocessing/RenderPass.js";
+			import { ShaderPass } from "https://unpkg.com/three@0.120.1/examples/jsm/postprocessing/ShaderPass.js";
+			import { DotScreenShader } from "https://unpkg.com/three@0.120.1/examples/jsm/shaders/DotScreenShader.js";
+			import Threeasy from "https://unpkg.com/threeasy@0.1.13";
 
-      const app = new Threeasy(THREE);
-      app.camera.position.set(0, 2, 2);
-      app.camera.lookAt(0, 0, 0);
+			const app = new Threeasy(THREE);
+			app.camera.position.set(0, 2, 2);
+			app.camera.lookAt(0, 0, 0);
 
-      const mat = new THREE.MeshNormalMaterial();
-      const geo = new THREE.BoxGeometry();
-      const mesh = new THREE.Mesh(geo, mat);
+			const mat = new THREE.MeshNormalMaterial();
+			const geo = new THREE.BoxGeometry();
+			const mesh = new THREE.Mesh(geo, mat);
 
-      const composer = new EffectComposer(app.renderer);
-      composer.addPass(new RenderPass(app.scene, app.camera));
+			const composer = new EffectComposer(app.renderer);
+			composer.addPass(new RenderPass(app.scene, app.camera));
 
-      const effect1 = new ShaderPass(DotScreenShader);
-      effect1.uniforms["scale"].value = 4;
-      composer.addPass(effect1);
+			const effect1 = new ShaderPass(DotScreenShader);
+			effect1.uniforms["scale"].value = 4;
+			composer.addPass(effect1);
 
-      // THIS RESETS THE RENDERER AND ADDS IT TO THE RENDER LOOP
-      app.render = () => composer.render();
+			// THIS RESETS THE RENDERER AND ADDS IT TO THE RENDER LOOP
+			app.render = () => composer.render();
 
-      app.animate(() => {
-        mesh.rotation.y += 0.01;
-      });
+			app.animate(() => {
+				mesh.rotation.y += 0.01;
+			});
 
-      app.scene.add(mesh);
-    </script>
-  </body>
+			app.scene.add(mesh);
+		</script>
+	</body>
 </html>

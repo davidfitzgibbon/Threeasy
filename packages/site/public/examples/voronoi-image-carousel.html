@@ -1,71 +1,71 @@
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 
-    <title>Voronoi Image Carousel</title>
+		<title>Voronoi Image Carousel</title>
 
-    <meta
-      name="description"
-      content="A light wrapper around ThreeJS to make learning easier."
-    />
-    <meta property="og:title" content="Voronoi Image Carousel" />
-    <meta
-      property="og:description"
-      content="A light wrapper around ThreeJS to make learning easier."
-    />
-    <meta property="og:image" content="https://threeasy.org/imgs/social.jpg" />
-    <meta
-      property="og:image:alt"
-      content="A light wrapper around ThreeJS to make learning easier."
-    />
-    <meta property="og:locale" content="en_IE" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta property="og:url" content="https://threeasy.org/" />
-    <link rel="canonical" href="https://threeasy.org/" />
-  </head>
+		<meta
+			name="description"
+			content="A light wrapper around ThreeJS to make learning easier."
+		/>
+		<meta property="og:title" content="Voronoi Image Carousel" />
+		<meta
+			property="og:description"
+			content="A light wrapper around ThreeJS to make learning easier."
+		/>
+		<meta property="og:image" content="https://threeasy.org/imgs/social.jpg" />
+		<meta
+			property="og:image:alt"
+			content="A light wrapper around ThreeJS to make learning easier."
+		/>
+		<meta property="og:locale" content="en_IE" />
+		<meta property="og:type" content="website" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta property="og:url" content="https://threeasy.org/" />
+		<link rel="canonical" href="https://threeasy.org/" />
+	</head>
 
-  <body style="margin: 0">
-    <div class="buttons">
-      <span class="prev">previous</span> ~
-      <span class="next">next</span>
-    </div>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-      }
+	<body style="margin: 0">
+		<div class="buttons">
+			<span class="prev">previous</span> ~
+			<span class="next">next</span>
+		</div>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
 
-      body {
-        overflow: hidden;
-      }
-      .buttons {
-        position: absolute;
-        top: 50%;
-        transform: translateY(30vh);
-        text-align: center;
-        left: 0;
-        width: 100%;
-        font-size: 24px;
-        font-family: Garamond, Baskerville, "Baskerville Old Face",
-          "Hoefler Text", "Times New Roman", serif;
-        font-size: 24px;
-      }
-      span {
-        cursor: pointer;
-      }
-    </style>
-    <script src="https://unpkg.com/gsap@3.10.4/dist/gsap.js"></script>
-    <script type="module">
-      import * as THREE from "https://unpkg.com/three@0.120.1/build/three.module.js";
-      import Threeasy from "https://unpkg.com/threeasy";
+			body {
+				overflow: hidden;
+			}
+			.buttons {
+				position: absolute;
+				top: 50%;
+				transform: translateY(30vh);
+				text-align: center;
+				left: 0;
+				width: 100%;
+				font-size: 24px;
+				font-family: Garamond, Baskerville, "Baskerville Old Face",
+					"Hoefler Text", "Times New Roman", serif;
+				font-size: 24px;
+			}
+			span {
+				cursor: pointer;
+			}
+		</style>
+		<script src="https://unpkg.com/gsap@3.10.4/dist/gsap.js"></script>
+		<script type="module">
+			import * as THREE from "https://unpkg.com/three@0.120.1/build/three.module.js";
+			import Threeasy from "https://unpkg.com/threeasy@0.1.13";
 
-      const fragment = `
+			const fragment = `
         uniform float pointCount;
         uniform float progress;
 
@@ -86,7 +86,7 @@
           gl_FragColor = image;
         }
       `;
-      const vertex = `
+			const vertex = `
           float PI = 3.1415926535897932384626433;
 
           vec3 mod289(vec3 x) {
@@ -289,196 +289,196 @@
             gl_Position = projectionMatrix * mvPosition;
           }
       `;
-      const img1 = "/examples/textures/stair1.jpeg"; // https://unsplash.com/photos/w6OniVDCfn0
-      const img2 = "/examples/textures/stair2.jpeg"; // https://unsplash.com/photos/cfQEO_1S0Rs
-      const img3 = "/examples/textures/stair3.jpeg"; // https://unsplash.com/photos/tb4heMa-ZRo
+			const img1 = "/examples/textures/stair1.jpeg"; // https://unsplash.com/photos/w6OniVDCfn0
+			const img2 = "/examples/textures/stair2.jpeg"; // https://unsplash.com/photos/cfQEO_1S0Rs
+			const img3 = "/examples/textures/stair3.jpeg"; // https://unsplash.com/photos/tb4heMa-ZRo
 
-      // SETTINGS
-      let textures, geo, w, h, mat, mesh, particleCount, positions, coordinates;
-      let progress = { progress: 0 };
-      let active = 0;
-      let pointCount = 20;
-      let colorsBG = ["#ddf4f0", "#e4e2ee", "#cbdac3"];
-      let colorsText = ["#8a3738", "#840c02", "#444"];
+			// SETTINGS
+			let textures, geo, w, h, mat, mesh, particleCount, positions, coordinates;
+			let progress = { progress: 0 };
+			let active = 0;
+			let pointCount = 20;
+			let colorsBG = ["#ddf4f0", "#e4e2ee", "#cbdac3"];
+			let colorsText = ["#8a3738", "#840c02", "#444"];
 
-      function randomVoronoiVector() {
-        return new THREE.Vector3(
-          Math.round(w * Math.random() - w * 0.5),
-          Math.round(h * Math.random() - h * 0.5),
-          0
-        );
-      }
-      function random3DVector() {
-        return new THREE.Vector3(Math.random(), Math.random(), Math.random());
-      }
-      function random3DDirectionalVector() {
-        let v = new THREE.Vector3(
-          Math.random() * 30 * Math.random() < 0.5 ? 1 : -1,
-          Math.random() * 30 * Math.random() < 0.5 ? 1 : -1,
-          Math.random()
-        );
-        return v;
-      }
-      function moveVoronoiVectors() {
-        for (let i = 1; i <= 20; i++) {
-          let item = mesh.material.uniforms[`p${i}v`].value;
-          let acc = mesh.material.uniforms[`p${i}a`].value;
+			function randomVoronoiVector() {
+				return new THREE.Vector3(
+					Math.round(w * Math.random() - w * 0.5),
+					Math.round(h * Math.random() - h * 0.5),
+					0
+				);
+			}
+			function random3DVector() {
+				return new THREE.Vector3(Math.random(), Math.random(), Math.random());
+			}
+			function random3DDirectionalVector() {
+				let v = new THREE.Vector3(
+					Math.random() * 30 * Math.random() < 0.5 ? 1 : -1,
+					Math.random() * 30 * Math.random() < 0.5 ? 1 : -1,
+					Math.random()
+				);
+				return v;
+			}
+			function moveVoronoiVectors() {
+				for (let i = 1; i <= 20; i++) {
+					let item = mesh.material.uniforms[`p${i}v`].value;
+					let acc = mesh.material.uniforms[`p${i}a`].value;
 
-          item.x += acc.x;
-          item.y += acc.y;
+					item.x += acc.x;
+					item.y += acc.y;
 
-          if (item.x <= -w / 2) {
-            item.x = -w / 2;
-            acc.x *= -1;
-          }
-          if (item.x >= w / 2) {
-            item.x = w / 2;
-            acc.x *= -1;
-          }
-          if (item.y <= -h / 2) {
-            item.y = -h / 2;
-            acc.y *= -1;
-          }
-          if (item.y >= h / 2) {
-            item.y = h / 2;
-            acc.y *= -1;
-          }
-        }
-      }
+					if (item.x <= -w / 2) {
+						item.x = -w / 2;
+						acc.x *= -1;
+					}
+					if (item.x >= w / 2) {
+						item.x = w / 2;
+						acc.x *= -1;
+					}
+					if (item.y <= -h / 2) {
+						item.y = -h / 2;
+						acc.y *= -1;
+					}
+					if (item.y >= h / 2) {
+						item.y = h / 2;
+						acc.y *= -1;
+					}
+				}
+			}
 
-      document.body.style.backgroundColor = colorsBG[0];
-      document.body.style.color = colorsText[0];
+			document.body.style.backgroundColor = colorsBG[0];
+			document.body.style.color = colorsText[0];
 
-      const app = new Threeasy(THREE, {
-        preload: {
-          img1,
-          img2,
-          img3,
-        },
-      });
+			const app = new Threeasy(THREE, {
+				preload: {
+					img1,
+					img2,
+					img3,
+				},
+			});
 
-      app.renderer.alpha = true;
-      app.renderer.clearColor(0, 0, 0, 0);
-      app.renderer.setClearAlpha(0);
-      app.scene.background = new THREE.Color(0, 0, 0, 0);
-      console.log(app.renderer);
-      console.log(app.scene);
+			app.renderer.alpha = true;
+			app.renderer.clearColor(0, 0, 0, 0);
+			app.renderer.setClearAlpha(0);
+			app.scene.background = new THREE.Color(0, 0, 0, 0);
+			console.log(app.renderer);
+			console.log(app.scene);
 
-      app.camera = new THREE.PerspectiveCamera(
-        45,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        6000
-      );
-      app.camera.position.x = 0;
-      app.camera.position.y = 0;
-      app.camera.position.z = 1000;
+			app.camera = new THREE.PerspectiveCamera(
+				45,
+				window.innerWidth / window.innerHeight,
+				0.1,
+				6000
+			);
+			app.camera.position.x = 0;
+			app.camera.position.y = 0;
+			app.camera.position.z = 1000;
 
-      let ambLight = new THREE.AmbientLight(0xffffff, 0.7, 100);
-      app.scene.add(ambLight);
+			let ambLight = new THREE.AmbientLight(0xffffff, 0.7, 100);
+			app.scene.add(ambLight);
 
-      let dirLight = new THREE.DirectionalLight(0xffffff, 1, 100);
-      dirLight.position.set(-3, 5, -3);
-      app.scene.add(dirLight);
+			let dirLight = new THREE.DirectionalLight(0xffffff, 1, 100);
+			dirLight.position.set(-3, 5, -3);
+			app.scene.add(dirLight);
 
-      app.postload(() => {
-        textures = [app.img1, app.img2, app.img3];
-        geo = new THREE.BufferGeometry();
-        w = textures[1].image.naturalWidth;
-        h = textures[1].image.naturalHeight;
-        particleCount = w * h;
+			app.postload(() => {
+				textures = [app.img1, app.img2, app.img3];
+				geo = new THREE.BufferGeometry();
+				w = textures[1].image.naturalWidth;
+				h = textures[1].image.naturalHeight;
+				particleCount = w * h;
 
-        positions = new THREE.BufferAttribute(
-          new Float32Array(particleCount * 3),
-          3
-        );
-        coordinates = new THREE.BufferAttribute(
-          new Float32Array(particleCount * 3),
-          3
-        );
+				positions = new THREE.BufferAttribute(
+					new Float32Array(particleCount * 3),
+					3
+				);
+				coordinates = new THREE.BufferAttribute(
+					new Float32Array(particleCount * 3),
+					3
+				);
 
-        let index = 0;
-        for (let i = 0; i < w; i++) {
-          for (let j = 0; j < h; j++) {
-            positions.setXYZ(index, i - w / 2, j - h / 2, 0);
-            coordinates.setXYZ(index, i, j, 0);
-            index++;
-          }
-        }
-        geo.setAttribute("position", positions);
-        geo.setAttribute("aCoordinates", coordinates);
+				let index = 0;
+				for (let i = 0; i < w; i++) {
+					for (let j = 0; j < h; j++) {
+						positions.setXYZ(index, i - w / 2, j - h / 2, 0);
+						coordinates.setXYZ(index, i, j, 0);
+						index++;
+					}
+				}
+				geo.setAttribute("position", positions);
+				geo.setAttribute("aCoordinates", coordinates);
 
-        mat = new THREE.ShaderMaterial({
-          side: THREE.DoubleSide,
-          transparent: true,
-          depthTest: false,
-          depthWrite: false,
-          uniforms: {
-            progress: { value: progress.progress },
-            w: { value: w },
-            h: { value: h },
-            pointCount: { value: pointCount },
-            currentImg: { value: textures[active % 3] },
-            nextImg: { value: textures[(active + 1) % 3] },
-          },
-          vertexShader: vertex,
-          fragmentShader: fragment,
-        });
-        for (let i = 1; i <= 20; i++) {
-          mat.uniforms[`p${i}v`] = { value: randomVoronoiVector() };
-          mat.uniforms[`p${i}c`] = { value: random3DVector() };
-          mat.uniforms[`p${i}a`] = { value: random3DDirectionalVector() };
-        }
-        mesh = new THREE.Points(geo, mat);
-        app.scene.add(mesh);
+				mat = new THREE.ShaderMaterial({
+					side: THREE.DoubleSide,
+					transparent: true,
+					depthTest: false,
+					depthWrite: false,
+					uniforms: {
+						progress: { value: progress.progress },
+						w: { value: w },
+						h: { value: h },
+						pointCount: { value: pointCount },
+						currentImg: { value: textures[active % 3] },
+						nextImg: { value: textures[(active + 1) % 3] },
+					},
+					vertexShader: vertex,
+					fragmentShader: fragment,
+				});
+				for (let i = 1; i <= 20; i++) {
+					mat.uniforms[`p${i}v`] = { value: randomVoronoiVector() };
+					mat.uniforms[`p${i}c`] = { value: random3DVector() };
+					mat.uniforms[`p${i}a`] = { value: random3DDirectionalVector() };
+				}
+				mesh = new THREE.Points(geo, mat);
+				app.scene.add(mesh);
 
-        app.animate(() => {
-          moveVoronoiVectors();
-          mesh.material.uniforms.progress.value = progress.progress;
-        });
-      });
+				app.animate(() => {
+					moveVoronoiVectors();
+					mesh.material.uniforms.progress.value = progress.progress;
+				});
+			});
 
-      function choose(current, next) {
-        current = current % 3;
-        next = next % 3;
-        mesh.material.uniforms.currentImg.value = textures[current];
-        mesh.material.uniforms.nextImg.value = textures[next];
-        gsap.fromTo(
-          progress,
-          { progress: 0 },
-          { progress: 100, duration: 2, ease: "power1.inOut" }
-        );
-        gsap.to("body", {
-          backgroundColor: colorsBG[next],
-          color: colorsText[next],
-          duration: 1.5,
-          delay: 1,
-          ease: "power4.inOut",
-        });
-      }
-      function choosePrev() {
-        let current = active;
-        let next;
-        if (active == 0) active = 3;
-        active--;
-        next = active;
-        choose(current, next);
-      }
-      function chooseNext() {
-        let current = active;
-        let next;
-        active++;
-        next = active;
+			function choose(current, next) {
+				current = current % 3;
+				next = next % 3;
+				mesh.material.uniforms.currentImg.value = textures[current];
+				mesh.material.uniforms.nextImg.value = textures[next];
+				gsap.fromTo(
+					progress,
+					{ progress: 0 },
+					{ progress: 100, duration: 2, ease: "power1.inOut" }
+				);
+				gsap.to("body", {
+					backgroundColor: colorsBG[next],
+					color: colorsText[next],
+					duration: 1.5,
+					delay: 1,
+					ease: "power4.inOut",
+				});
+			}
+			function choosePrev() {
+				let current = active;
+				let next;
+				if (active == 0) active = 3;
+				active--;
+				next = active;
+				choose(current, next);
+			}
+			function chooseNext() {
+				let current = active;
+				let next;
+				active++;
+				next = active;
 
-        choose(current, next);
-      }
+				choose(current, next);
+			}
 
-      document.querySelector(".prev").addEventListener("click", () => {
-        choosePrev();
-      });
-      document.querySelector(".next").addEventListener("click", () => {
-        chooseNext();
-      });
-    </script>
-  </body>
+			document.querySelector(".prev").addEventListener("click", () => {
+				choosePrev();
+			});
+			document.querySelector(".next").addEventListener("click", () => {
+				chooseNext();
+			});
+		</script>
+	</body>
 </html>

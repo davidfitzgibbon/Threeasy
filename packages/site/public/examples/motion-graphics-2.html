@@ -1,86 +1,86 @@
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 
-    <title>Motion Graphics 1</title>
+		<title>Motion Graphics 1</title>
 
-    <meta
-      name="description"
-      content="A light wrapper around ThreeJS to make learning easier."
-    />
-    <meta property="og:title" content="Motion Graphics 2" />
-    <meta
-      property="og:description"
-      content="A light wrapper around ThreeJS to make learning easier."
-    />
-    <meta property="og:image" content="https://threeasy.org/imgs/social.jpg" />
-    <meta
-      property="og:image:alt"
-      content="A light wrapper around ThreeJS to make learning easier."
-    />
-    <meta property="og:locale" content="en_IE" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta property="og:url" content="https://threeasy.org/" />
-    <link rel="canonical" href="https://threeasy.org/" />
-  </head>
+		<meta
+			name="description"
+			content="A light wrapper around ThreeJS to make learning easier."
+		/>
+		<meta property="og:title" content="Motion Graphics 2" />
+		<meta
+			property="og:description"
+			content="A light wrapper around ThreeJS to make learning easier."
+		/>
+		<meta property="og:image" content="https://threeasy.org/imgs/social.jpg" />
+		<meta
+			property="og:image:alt"
+			content="A light wrapper around ThreeJS to make learning easier."
+		/>
+		<meta property="og:locale" content="en_IE" />
+		<meta property="og:type" content="website" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta property="og:url" content="https://threeasy.org/" />
+		<link rel="canonical" href="https://threeasy.org/" />
+	</head>
 
-  <body style="margin: 0">
-    <Example title="Motion Graphics 2">
-      <script type="module">
-        import * as THREE from "https://unpkg.com/three@0.120.1/build/three.module.js";
-        import Threeasy from "https://unpkg.com/threeasy";
+	<body style="margin: 0">
+		<Example title="Motion Graphics 2">
+			<script type="module">
+				import * as THREE from "https://unpkg.com/three@0.120.1/build/three.module.js";
+				import Threeasy from "https://unpkg.com/threeasy@0.1.13";
 
-        const app = new Threeasy(THREE, {
-          preload: { img: "/examples/textures/threeasy-mg.png" },
-          light: false,
-        });
-        app.camera.position.set(0, 1.5, 1);
-        app.camera.lookAt(0, 0, 0);
+				const app = new Threeasy(THREE, {
+					preload: { img: "/examples/textures/threeasy-mg.png" },
+					light: false,
+				});
+				app.camera.position.set(0, 1.5, 1);
+				app.camera.lookAt(0, 0, 0);
 
-        const light = new THREE.PointLight(0xffffff, 2, 25);
-        light.position.set(0, 0.75, 2);
-        app.scene.add(light);
+				const light = new THREE.PointLight(0xffffff, 2, 25);
+				light.position.set(0, 0.75, 2);
+				app.scene.add(light);
 
-        app.postload(() => {
-          app.img.repeat.set(2, 1);
+				app.postload(() => {
+					app.img.repeat.set(2, 1);
 
-          const mat = new THREE.MeshStandardMaterial({
-            map: app.img,
-            transparent: true,
-            side: THREE.DoubleSide,
-          });
-          const geo = new THREE.CylinderGeometry(
-            0.75,
-            0.75,
-            0.3,
-            64,
-            64,
-            1,
-            false
-          );
+					const mat = new THREE.MeshStandardMaterial({
+						map: app.img,
+						transparent: true,
+						side: THREE.DoubleSide,
+					});
+					const geo = new THREE.CylinderGeometry(
+						0.75,
+						0.75,
+						0.3,
+						64,
+						64,
+						1,
+						false
+					);
 
-          const mesh1 = new THREE.Mesh(geo, mat);
-          mesh1.rotation.z = Math.PI * 0.25;
-          app.animate(() => {
-            mesh1.rotateOnWorldAxis(new THREE.Vector3(-1, 1, 0), -0.005);
-          });
-          app.scene.add(mesh1);
+					const mesh1 = new THREE.Mesh(geo, mat);
+					mesh1.rotation.z = Math.PI * 0.25;
+					app.animate(() => {
+						mesh1.rotateOnWorldAxis(new THREE.Vector3(-1, 1, 0), -0.005);
+					});
+					app.scene.add(mesh1);
 
-          const mesh2 = new THREE.Mesh(geo, mat);
-          mesh2.rotation.z = Math.PI * -0.25;
-          app.animate(() => {
-            mesh2.rotateOnWorldAxis(new THREE.Vector3(1, 1, 0), 0.005);
-          });
-          mesh2.position.z = -0.5;
-          app.scene.add(mesh2);
-        });
-      </script>
-    </Example>
-  </body>
+					const mesh2 = new THREE.Mesh(geo, mat);
+					mesh2.rotation.z = Math.PI * -0.25;
+					app.animate(() => {
+						mesh2.rotateOnWorldAxis(new THREE.Vector3(1, 1, 0), 0.005);
+					});
+					mesh2.position.z = -0.5;
+					app.scene.add(mesh2);
+				});
+			</script>
+		</Example>
+	</body>
 </html>

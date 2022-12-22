@@ -1,206 +1,206 @@
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 
-    <title>Wriggloop</title>
+		<title>Wriggloop</title>
 
-    <meta
-      name="description"
-      content="A light wrapper around ThreeJS to make learning easier."
-    />
-    <meta property="og:title" content="Wriggloop" />
-    <meta
-      property="og:description"
-      content="A light wrapper around ThreeJS to make learning easier."
-    />
-    <meta property="og:image" content="https://threeasy.org/imgs/social.jpg" />
-    <meta
-      property="og:image:alt"
-      content="A light wrapper around ThreeJS to make learning easier."
-    />
-    <meta property="og:locale" content="en_IE" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta property="og:url" content="https://threeasy.org/" />
-    <link rel="canonical" href="https://threeasy.org/" />
-  </head>
+		<meta
+			name="description"
+			content="A light wrapper around ThreeJS to make learning easier."
+		/>
+		<meta property="og:title" content="Wriggloop" />
+		<meta
+			property="og:description"
+			content="A light wrapper around ThreeJS to make learning easier."
+		/>
+		<meta property="og:image" content="https://threeasy.org/imgs/social.jpg" />
+		<meta
+			property="og:image:alt"
+			content="A light wrapper around ThreeJS to make learning easier."
+		/>
+		<meta property="og:locale" content="en_IE" />
+		<meta property="og:type" content="website" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta property="og:url" content="https://threeasy.org/" />
+		<link rel="canonical" href="https://threeasy.org/" />
+	</head>
 
-  <body style="margin: 0">
-    <style>
-      @import url("https://fonts.googleapis.com/css?family=Raleway:400,400i,700");
+	<body style="margin: 0">
+		<style>
+			@import url("https://fonts.googleapis.com/css?family=Raleway:400,400i,700");
 
-      body,
-      html {
-        margin: 0;
-        height: 100vh;
-      }
+			body,
+			html {
+				margin: 0;
+				height: 100vh;
+			}
 
-      canvas {
-        width: 100%;
-        height: 100%;
-      }
+			canvas {
+				width: 100%;
+				height: 100%;
+			}
 
-      h1 {
-        position: absolute;
-        bottom: 1em;
-        left: 0;
-        right: 0;
-        text-align: center;
-        z-index: 1;
-        font-size: 20px;
-        font-family: Raleway, sans-serif;
-        font-weight: normal;
-      }
+			h1 {
+				position: absolute;
+				bottom: 1em;
+				left: 0;
+				right: 0;
+				text-align: center;
+				z-index: 1;
+				font-size: 20px;
+				font-family: Raleway, sans-serif;
+				font-weight: normal;
+			}
 
-      a {
-        color: dodgerblue;
-      }
-    </style>
-    <h1>
-      Immitation of
-      <a target="_blank" href="https://junkiyoshi.com/openframeworks20210427/"
-        >Twisting by JUNKIYOSHI</a
-      >
-    </h1>
-    <script type="module">
-      import Threeasy from "https://unpkg.com/threeasy";
-      import * as THREE from "https://unpkg.com/three@0.142.0/build/three.module.js";
-      import { OutlineEffect } from "./libs/effects/OutlineEffect.js";
-      import { makeNoise4D } from "https://cdn.skypack.dev/open-simplex-noise";
-      const noise4D = makeNoise4D(Date.now());
+			a {
+				color: dodgerblue;
+			}
+		</style>
+		<h1>
+			Immitation of
+			<a target="_blank" href="https://junkiyoshi.com/openframeworks20210427/"
+				>Twisting by JUNKIYOSHI</a
+			>
+		</h1>
+		<script type="module">
+			import Threeasy from "https://unpkg.com/threeasy@0.1.13";
+			import * as THREE from "https://unpkg.com/three@0.142.0/build/three.module.js";
+			import { OutlineEffect } from "./libs/effects/OutlineEffect.js";
+			import { makeNoise4D } from "https://cdn.skypack.dev/open-simplex-noise";
+			const noise4D = makeNoise4D(Date.now());
 
-      const app = new Threeasy(THREE, { light: false });
-      app.scene.background = new THREE.Color(0xffffff);
-      app.camera.position.x = -0;
-      app.camera.position.y = 0;
-      app.camera.position.z = 3;
-      app.renderer.toneMapping = THREE.NoToneMapping;
+			const app = new Threeasy(THREE, { light: false });
+			app.scene.background = new THREE.Color(0xffffff);
+			app.camera.position.x = -0;
+			app.camera.position.y = 0;
+			app.camera.position.z = 3;
+			app.renderer.toneMapping = THREE.NoToneMapping;
 
-      let colorCount = 6;
-      let groupCount = 128;
-      let throttle = 0.4;
-      let angleOfRotation = Math.PI * 5;
-      let amplitude = 0.75;
-      let materials = [];
-      let curves = [];
-      let geometries = [];
-      let meshes = [];
+			let colorCount = 6;
+			let groupCount = 128;
+			let throttle = 0.4;
+			let angleOfRotation = Math.PI * 5;
+			let amplitude = 0.75;
+			let materials = [];
+			let curves = [];
+			let geometries = [];
+			let meshes = [];
 
-      // createGroup
-      let basicGroup = new THREE.Group();
-      for (let i = 0; i < colorCount; i++) {
-        const angleDeg = (360 / colorCount) * i;
-        const angleRad = (angleDeg / 360) * Math.PI * 2;
-        const radius = 0.1;
+			// createGroup
+			let basicGroup = new THREE.Group();
+			for (let i = 0; i < colorCount; i++) {
+				const angleDeg = (360 / colorCount) * i;
+				const angleRad = (angleDeg / 360) * Math.PI * 2;
+				const radius = 0.1;
 
-        const material = new THREE.MeshBasicMaterial({
-          color: `hsl(${angleDeg},60%,50%)`,
-        });
-        materials.push(material);
+				const material = new THREE.MeshBasicMaterial({
+					color: `hsl(${angleDeg},60%,50%)`,
+				});
+				materials.push(material);
 
-        const mesh = new THREE.Object3D();
-        mesh.position.x = Math.cos(angleRad) * radius;
-        mesh.position.z = Math.sin(angleRad) * radius;
-        basicGroup.add(mesh);
-      }
+				const mesh = new THREE.Object3D();
+				mesh.position.x = Math.cos(angleRad) * radius;
+				mesh.position.z = Math.sin(angleRad) * radius;
+				basicGroup.add(mesh);
+			}
 
-      // duplicate and place
-      let groups = [];
-      for (let i = 0; i < groupCount; i++) {
-        const group = basicGroup.clone();
+			// duplicate and place
+			let groups = [];
+			for (let i = 0; i < groupCount; i++) {
+				const group = basicGroup.clone();
 
-        const angleDeg = (360 / groupCount) * i;
-        const angleRad = (angleDeg / 360) * Math.PI * 2;
-        const radius = 1;
+				const angleDeg = (360 / groupCount) * i;
+				const angleRad = (angleDeg / 360) * Math.PI * 2;
+				const radius = 1;
 
-        //  ROTATION
-        group.rotation.z = angleRad;
-        group.dir = new THREE.Vector3(0, Math.PI, 0);
-        group.dir.normalize();
+				//  ROTATION
+				group.rotation.z = angleRad;
+				group.dir = new THREE.Vector3(0, Math.PI, 0);
+				group.dir.normalize();
 
-        // POSITION
-        group.position.x = Math.cos(angleRad) * radius;
-        group.position.y = Math.sin(angleRad) * radius;
+				// POSITION
+				group.position.x = Math.cos(angleRad) * radius;
+				group.position.y = Math.sin(angleRad) * radius;
 
-        group.currentAngle = 0;
+				group.currentAngle = 0;
 
-        groups.push(group);
-        // scene.add(group);
-      }
+				groups.push(group);
+				// scene.add(group);
+			}
 
-      // add tubes
-      createGeometries();
+			// add tubes
+			createGeometries();
 
-      app.animator.add(() => {
-        groups.forEach((group) => {
-          let noise = noise4D(
-            group.position.x * amplitude,
-            group.position.y * amplitude,
-            group.position.z * amplitude,
-            app.clock.getElapsedTime()
-          );
-          const targetAngle = noise * throttle * angleOfRotation;
-          const angleOfMovement = targetAngle - group.currentAngle;
+			app.animator.add(() => {
+				groups.forEach((group) => {
+					let noise = noise4D(
+						group.position.x * amplitude,
+						group.position.y * amplitude,
+						group.position.z * amplitude,
+						app.clock.getElapsedTime()
+					);
+					const targetAngle = noise * throttle * angleOfRotation;
+					const angleOfMovement = targetAngle - group.currentAngle;
 
-          group.rotateOnAxis(group.dir, angleOfMovement);
-          group.currentAngle = targetAngle;
-        });
-        updateGeometries();
-      });
+					group.rotateOnAxis(group.dir, angleOfMovement);
+					group.currentAngle = targetAngle;
+				});
+				updateGeometries();
+			});
 
-      let effect = new OutlineEffect(app.renderer);
-      app.render = () => {
-        effect.render(app.scene, app.camera);
-      };
+			let effect = new OutlineEffect(app.renderer);
+			app.render = () => {
+				effect.render(app.scene, app.camera);
+			};
 
-      function createGeometries() {
-        for (let i = 0; i < colorCount; i++) {
-          // get points
-          const pointArray = [];
-          groups.forEach((group) => {
-            const point = group.children[i];
-            pointArray.push(point.getWorldPosition(new THREE.Vector3()));
-          });
+			function createGeometries() {
+				for (let i = 0; i < colorCount; i++) {
+					// get points
+					const pointArray = [];
+					groups.forEach((group) => {
+						const point = group.children[i];
+						pointArray.push(point.getWorldPosition(new THREE.Vector3()));
+					});
 
-          // create curve
-          curves.push(new THREE.CatmullRomCurve3(pointArray, true));
+					// create curve
+					curves.push(new THREE.CatmullRomCurve3(pointArray, true));
 
-          // create geometry
-          geometries.push(new THREE.TubeGeometry(curves[i], 128, 0.05, 16));
+					// create geometry
+					geometries.push(new THREE.TubeGeometry(curves[i], 128, 0.05, 16));
 
-          // mesh
-          meshes.push(new THREE.Mesh(geometries[i], materials[i]));
+					// mesh
+					meshes.push(new THREE.Mesh(geometries[i], materials[i]));
 
-          app.scene.add(meshes[i]);
-        }
-      }
-      function updateGeometries() {
-        for (let i = 0; i < colorCount; i++) {
-          // get points
-          const pointArray = [];
-          groups.forEach((group) => {
-            const point = group.children[i];
-            pointArray.push(point.getWorldPosition(new THREE.Vector3()));
-          });
+					app.scene.add(meshes[i]);
+				}
+			}
+			function updateGeometries() {
+				for (let i = 0; i < colorCount; i++) {
+					// get points
+					const pointArray = [];
+					groups.forEach((group) => {
+						const point = group.children[i];
+						pointArray.push(point.getWorldPosition(new THREE.Vector3()));
+					});
 
-          // create curve
-          curves[i] = new THREE.CatmullRomCurve3(pointArray, true);
+					// create curve
+					curves[i] = new THREE.CatmullRomCurve3(pointArray, true);
 
-          // create geometry
-          geometries[i] = new THREE.TubeGeometry(curves[i], 128, 0.05, 16);
+					// create geometry
+					geometries[i] = new THREE.TubeGeometry(curves[i], 128, 0.05, 16);
 
-          // mesh
-          meshes[i].geometry = geometries[i];
+					// mesh
+					meshes[i].geometry = geometries[i];
 
-          meshes[i].geometry.verticesNeedUpdate = true;
-          meshes[i].geometry.dynamic = true;
-        }
-      }
-    </script>
-  </body>
+					meshes[i].geometry.verticesNeedUpdate = true;
+					meshes[i].geometry.dynamic = true;
+				}
+			}
+		</script>
+	</body>
 </html>

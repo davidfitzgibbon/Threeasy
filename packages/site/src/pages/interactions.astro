@@ -8,6 +8,10 @@ import Waypoint from "../components/Waypoint.svelte";
 const clickCode = /*js*/ `import * as THREE from "three";
 import Threeasy from "threeasy";
 
+const app = new Threeasy(THREE,{
+  interactions: true,
+});
+
 const box = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 const cube = new THREE.Mesh(box, material);
@@ -21,6 +25,10 @@ app.scene.add(cube);
 `;
 const hoverCode = /*js*/ `import * as THREE from "three";
 import Threeasy from "threeasy";
+
+const app = new Threeasy(THREE,{
+  interactions: true,
+});
 
 const box = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
@@ -41,6 +49,8 @@ app.scene.add(cube);
 <Page title="Interactions">
   <Markdown>
     Often you'll want to add some interactivity to your scene. Threeasy provides a few helper functions to make this easier.
+
+    Interactions can be expensive, so by default Threeasy doesnt enable them. To enable them, you need to pass the `interactions: true` as an option to the Threeasy constructor.
 
     ## Click
 

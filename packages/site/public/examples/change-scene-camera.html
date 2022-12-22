@@ -1,54 +1,54 @@
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 
-    <title>Change Scene, Camera objects</title>
+		<title>Change Scene, Camera objects</title>
 
-    <meta
-      name="description"
-      content="A light wrapper around ThreeJS to make learning easier."
-    />
-    <meta property="og:title" content="Change Scene, Camera objects" />
-    <meta
-      property="og:description"
-      content="A light wrapper around ThreeJS to make learning easier."
-    />
-    <meta property="og:image" content="https://threeasy.org/imgs/social.jpg" />
-    <meta
-      property="og:image:alt"
-      content="A light wrapper around ThreeJS to make learning easier."
-    />
-    <meta property="og:locale" content="en_IE" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta property="og:url" content="https://threeasy.org/" />
-    <link rel="canonical" href="https://threeasy.org/" />
-  </head>
+		<meta
+			name="description"
+			content="A light wrapper around ThreeJS to make learning easier."
+		/>
+		<meta property="og:title" content="Change Scene, Camera objects" />
+		<meta
+			property="og:description"
+			content="A light wrapper around ThreeJS to make learning easier."
+		/>
+		<meta property="og:image" content="https://threeasy.org/imgs/social.jpg" />
+		<meta
+			property="og:image:alt"
+			content="A light wrapper around ThreeJS to make learning easier."
+		/>
+		<meta property="og:locale" content="en_IE" />
+		<meta property="og:type" content="website" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta property="og:url" content="https://threeasy.org/" />
+		<link rel="canonical" href="https://threeasy.org/" />
+	</head>
 
-  <body style="margin: 0">
-    <script type="module">
-      import * as THREE from "https://unpkg.com/three@0.120.1/build/three.module.js";
-      import Threeasy from "https://unpkg.com/threeasy";
+	<body style="margin: 0">
+		<script type="module">
+			import * as THREE from "https://unpkg.com/three@0.120.1/build/three.module.js";
+			import Threeasy from "https://unpkg.com/threeasy@0.1.13";
 
-      const app = new Threeasy(THREE);
-      app.scene.background = new THREE.Color("dodgerblue");
-      app.camera.position.set(0, 2, 2);
-      app.camera.lookAt(0, 0, 0);
+			const app = new Threeasy(THREE);
+			app.scene.background = new THREE.Color("dodgerblue");
+			app.camera.position.set(0, 2, 2);
+			app.camera.lookAt(0, 0, 0);
 
-      const mat = new THREE.MeshBasicMaterial({ color: "white" });
-      const geo = new THREE.BoxGeometry();
+			const mat = new THREE.MeshBasicMaterial({ color: "white" });
+			const geo = new THREE.BoxGeometry();
 
-      const mesh = new THREE.Mesh(geo, mat);
-      app.animate(() => {
-        mesh.rotation.y += 0.01;
-      });
+			const mesh = new THREE.Mesh(geo, mat);
+			app.animate(() => {
+				mesh.rotation.y += 0.01;
+			});
 
-      app.scene.add(mesh);
-    </script>
-  </body>
+			app.scene.add(mesh);
+		</script>
+	</body>
 </html>

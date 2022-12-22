@@ -1,123 +1,123 @@
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 
-    <title>Swimming Fish</title>
+		<title>Swimming Fish</title>
 
-    <meta
-      name="description"
-      content="A light wrapper around ThreeJS to make learning easier."
-    />
-    <meta property="og:title" content="Swimming Fish" />
-    <meta
-      property="og:description"
-      content="A light wrapper around ThreeJS to make learning easier."
-    />
-    <meta property="og:image" content="https://threeasy.org/imgs/social.jpg" />
-    <meta
-      property="og:image:alt"
-      content="A light wrapper around ThreeJS to make learning easier."
-    />
-    <meta property="og:locale" content="en_IE" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta property="og:url" content="https://threeasy.org/" />
-    <link rel="canonical" href="https://threeasy.org/" />
-  </head>
+		<meta
+			name="description"
+			content="A light wrapper around ThreeJS to make learning easier."
+		/>
+		<meta property="og:title" content="Swimming Fish" />
+		<meta
+			property="og:description"
+			content="A light wrapper around ThreeJS to make learning easier."
+		/>
+		<meta property="og:image" content="https://threeasy.org/imgs/social.jpg" />
+		<meta
+			property="og:image:alt"
+			content="A light wrapper around ThreeJS to make learning easier."
+		/>
+		<meta property="og:locale" content="en_IE" />
+		<meta property="og:type" content="website" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta property="og:url" content="https://threeasy.org/" />
+		<link rel="canonical" href="https://threeasy.org/" />
+	</head>
 
-  <body style="margin: 0">
-    <svg id="circle" viewBox="0 0 100 100" style="display: none">
-      <path d="M50 16c26 0 46 8 46 34S77 80 51 80 4 76 4 50s20-34 46-34Z" />
-    </svg>
+	<body style="margin: 0">
+		<svg id="circle" viewBox="0 0 100 100" style="display: none">
+			<path d="M50 16c26 0 46 8 46 34S77 80 51 80 4 76 4 50s20-34 46-34Z" />
+		</svg>
 
-    <script type="module">
-      import * as THREE from "https://unpkg.com/three@0.120.1/build/three.module.js";
-      import { GLTFLoader } from "https://unpkg.com/three@0.120.1/examples/jsm/loaders/GLTFLoader.js";
-      import { Flow } from "./libs/modifiers/CurveModifier.js";
-      import Threeasy from "https://unpkg.com/threeasy";
-      import transformSVGPath from "https://000680810.codepen.website/scripts/transformSVGPath.js";
+		<script type="module">
+			import * as THREE from "https://unpkg.com/three@0.120.1/build/three.module.js";
+			import { GLTFLoader } from "https://unpkg.com/three@0.120.1/examples/jsm/loaders/GLTFLoader.js";
+			import { Flow } from "./libs/modifiers/CurveModifier.js";
+			import Threeasy from "https://unpkg.com/threeasy@0.1.13";
+			import transformSVGPath from "https://000680810.codepen.website/scripts/transformSVGPath.js";
 
-      console.clear();
-      /* 
+			console.clear();
+			/* 
         FISH FROM https://poly.pizza/m/3GPUntjwqCa
         Goldfish by Poly by Google [CC-BY], via Poly Pizza
       */
-      const app = new Threeasy(THREE, {
-        preload: {
-          fish: "/examples/models/fish.glb",
-        },
-        GLTFLoader,
-      });
+			const app = new Threeasy(THREE, {
+				preload: {
+					fish: "/examples/models/fish.glb",
+				},
+				GLTFLoader,
+			});
 
-      // SETTINGS
-      let flow;
-      let frequency = 11;
-      let amplitude = 0.04;
-      let pointCount = 100;
-      let svgName = "circle";
+			// SETTINGS
+			let flow;
+			let frequency = 11;
+			let amplitude = 0.04;
+			let pointCount = 100;
+			let svgName = "circle";
 
-      app.scene.background = new THREE.Color(0x222299);
-      app.camera.position.set(0, 1, 2);
-      app.camera.lookAt(0, 0, 0);
-      app.scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+			app.scene.background = new THREE.Color(0x222299);
+			app.camera.position.set(0, 1, 2);
+			app.camera.lookAt(0, 0, 0);
+			app.scene.add(new THREE.AmbientLight(0xffffff, 1.2));
 
-      app.postload(() => {
-        const svg = document.getElementById(svgName);
-        const origPoints = getCenteredSVGPoints(svg, 0.025);
-        const fishPoints = getFishPointsFromPoints(origPoints);
-        const fishCurve = new THREE.CatmullRomCurve3(fishPoints, true);
+			app.postload(() => {
+				const svg = document.getElementById(svgName);
+				const origPoints = getCenteredSVGPoints(svg, 0.025);
+				const fishPoints = getFishPointsFromPoints(origPoints);
+				const fishCurve = new THREE.CatmullRomCurve3(fishPoints, true);
 
-        followPoints(fishCurve);
-      });
+				followPoints(fishCurve);
+			});
 
-      const getCenteredSVGPoints = (svg, scale) => {
-        const viewBox = svg.getAttribute("viewBox").split(" ");
-        const width = parseFloat(viewBox[2]);
-        const height = parseFloat(viewBox[3]);
-        const path = svg.querySelector("path").getAttribute("d");
-        const shape = transformSVGPath(path);
-        const points = shape.getPoints(pointCount).map((point) => {
-          let v = new THREE.Vector3(
-            point.x - width / 2,
-            0,
-            point.y - height / 2
-          );
-          v = v.multiplyScalar(scale);
-          return v;
-        });
-        return points;
-      };
-      const getFishPointsFromPoints = (points) => {
-        const fishPoints = [];
-        console.log(frequency, amplitude);
-        const curve = new THREE.CatmullRomCurve3(points);
-        for (let i = 0; i < pointCount; i++) {
-          const t = i / pointCount;
-          const angle = (i / (pointCount / frequency)) % 1;
-          const displacement = Math.sin(Math.PI * 2 * angle) * amplitude;
-          let point = curve.getPoint(t);
-          const tangeant = curve.getTangent(t);
-          const normal = tangeant.clone().cross(new THREE.Vector3(0, 1, 0));
+			const getCenteredSVGPoints = (svg, scale) => {
+				const viewBox = svg.getAttribute("viewBox").split(" ");
+				const width = parseFloat(viewBox[2]);
+				const height = parseFloat(viewBox[3]);
+				const path = svg.querySelector("path").getAttribute("d");
+				const shape = transformSVGPath(path);
+				const points = shape.getPoints(pointCount).map((point) => {
+					let v = new THREE.Vector3(
+						point.x - width / 2,
+						0,
+						point.y - height / 2
+					);
+					v = v.multiplyScalar(scale);
+					return v;
+				});
+				return points;
+			};
+			const getFishPointsFromPoints = (points) => {
+				const fishPoints = [];
+				console.log(frequency, amplitude);
+				const curve = new THREE.CatmullRomCurve3(points);
+				for (let i = 0; i < pointCount; i++) {
+					const t = i / pointCount;
+					const angle = (i / (pointCount / frequency)) % 1;
+					const displacement = Math.sin(Math.PI * 2 * angle) * amplitude;
+					let point = curve.getPoint(t);
+					const tangeant = curve.getTangent(t);
+					const normal = tangeant.clone().cross(new THREE.Vector3(0, 1, 0));
 
-          point = point.add(normal.multiplyScalar(displacement));
-          fishPoints.push(point);
-        }
-        return fishPoints;
-      };
-      const followPoints = (curve) => {
-        flow = new Flow(app.fish);
-        flow.updateCurve(0, curve);
-        app.scene.add(flow.object3D);
+					point = point.add(normal.multiplyScalar(displacement));
+					fishPoints.push(point);
+				}
+				return fishPoints;
+			};
+			const followPoints = (curve) => {
+				flow = new Flow(app.fish);
+				flow.updateCurve(0, curve);
+				app.scene.add(flow.object3D);
 
-        app.animate(() => {
-          flow.moveAlongCurve(0.001);
-        });
-      };
-    </script>
-  </body>
+				app.animate(() => {
+					flow.moveAlongCurve(0.001);
+				});
+			};
+		</script>
+	</body>
 </html>
