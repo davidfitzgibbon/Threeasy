@@ -1,24 +1,24 @@
 {
-	"name": "Threeasy",
-	"version": "0.1.12",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"all:update": "pnpm -r update -i -L",
-		"clean": "find ./ -name node_modules -type d -exec rm -rf {} +",
-		"threeasy:dev": "pnpm -F threeasy run dev",
-		"threeasy:build": "pnpm -F threeasy run build",
-		"threeasy:pub": "pnpm -F threeasy run pub",
-		"site:dev": "pnpm -F @threeasy/site dev",
-		"site:start": "pnpm -F @threeasy/site dev",
-		"site:build": "pnpm -F @threeasy/site build",
-		"site:preview": "pnpm -F @threeasy/site preview",
-		"testland:dev": "pnpm -F @threeasy/testland dev",
-		"testland:start": "pnpm -F @threeasy/testland dev",
-		"testland:build": "pnpm -F @threeasy/testland build",
-		"testland:preview": "pnpm -F @threeasy/testland preview"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC"
+  "name": "Threeasy",
+  "version": "0.1.14",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "all:update": "pnpm -r update -i -L",
+    "clean": "find ./ -name node_modules -type d -exec rm -rf {} +",
+    "threeasy:dev": "pnpm -F threeasy run dev",
+    "threeasy:build": "pnpm -F threeasy run build",
+    "threeasy:pub": "pnpm -F threeasy run pub",
+    "site:dev": "pnpm -F @threeasy/site dev",
+    "site:start": "pnpm -F @threeasy/site dev",
+    "site:build": "pnpm -F @threeasy/site build",
+    "site:preview": "pnpm -F @threeasy/site preview",
+    "testland:dev": "pnpm -F @threeasy/testland dev",
+    "testland:start": "pnpm -F @threeasy/testland dev",
+    "testland:build": "pnpm -F @threeasy/testland build",
+    "testland:preview": "pnpm -F @threeasy/testland preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
