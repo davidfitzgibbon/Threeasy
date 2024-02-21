@@ -9,7 +9,10 @@ import { SobelOperatorShader } from "three/examples/jsm/shaders/SobelOperatorSha
 
 import Threeasy from "threeasy";
 
-window.app = new Threeasy(THREE, { interactions: true });
+window.app = new Threeasy(THREE, {
+	interactions: true,
+	// domElement: document.getElementById("box"),
+});
 
 const box = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });

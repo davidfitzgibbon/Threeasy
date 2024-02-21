@@ -23,8 +23,13 @@ export default class Threeasy {
 			light: true,
 			alpha: false,
 			interactions: false,
+			domElement: document.body,
 			...settings,
 		};
+
+		if (!this.settings.domElement) {
+			throw new Error("Threeasy: settings.domElement not found.");
+		}
 
 		this.THREE = THREE;
 		this.setSize();
@@ -77,15 +82,24 @@ export default class Threeasy {
 		this.clock = new THREE.Clock();
 		this.clock.start();
 		// RESIZE
-		document.body.appendChild(this.renderer.domElement);
-		window.addEventListener("resize", this.onWindowResize.bind(this), false);
+		this.settings.domElement.appendChild(this.renderer.domElement);
+		this.resizeObserver = new ResizeObserver((entries) => this.resize());
+		this.resizeObserver.observe(this.settings.domElement);
+
 		// PRELOAD
 		this.preload();
 	}
 	setSize() {
+		let dims = this.settings.domElement.getBoundingClientRect();
+		if (this.settings.domElement === document.body) {
+			dims = {
+				width: window.innerWidth,
+				height: window.innerHeight,
+			};
+		}
 		this.sizes = {
-			w: window.innerWidth,
-			h: window.innerHeight,
+			w: dims.width,
+			h: dims.height,
 		};
 	}
 	preload() {
@@ -130,6 +144,7 @@ export default class Threeasy {
 	 * @returns {void}
 	 */
 	resize() {
+		console.log("resizing");
 		this.setSize();
 
 		this.camera.aspect = this.sizes.w / this.sizes.h;
@@ -138,6 +153,7 @@ export default class Threeasy {
 		this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
 	}
 	onWindowResize() {
+		console.log("onWindowResize");
 		this.resize();
 	}
 }
