@@ -103,7 +103,6 @@ export default class Threeasy {
 				h: this.settings.domElement.clientHeight,
 			};
 		}
-		console.log(this.sizes);
 	}
 	preload() {
 		if (this.settings.preload) {
