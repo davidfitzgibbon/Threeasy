@@ -47,33 +47,30 @@ app.scene.add(cube);
 ---
 
 <Page title="Interactions">
-  <Markdown>
-    Often you'll want to add some interactivity to your scene. Threeasy provides a few helper functions to make this easier.
+	<Markdown>
+Often you'll want to add some interactivity to your scene. Threeasy provides a few helper functions to make this easier. Interactions can be expensive, so by default Threeasy doesnt enable them. To enable them, you need to pass the `interactions: true` as an option to the Threeasy constructor. 
+    
+All interations will return two variables. The javascript `event`, and the Three.js `object` that was interacted with. 
+    
+## Click
+    
+To add a click, we need to add two things to the interactions manager. First, the object we want to listen to. In this case, we'll use a cube. Second, the callback function. This function will be called when the object is clicked.
 
-    Interactions can be expensive, so by default Threeasy doesnt enable them. To enable them, you need to pass the `interactions: true` as an option to the Threeasy constructor.
+<Demo title="Threeasy Interactions - Click" url="interactions-click">
+  <Code code={clickCode} lang="js" />
+</Demo>
 
-    ## Click
+## Hover
 
-    To add a click, we need to add two things to the interactions manager.
+To add hover events we also add the object and a callback function.
+However, this time we pass an object with two functions, enter and leave.
 
-    First, the object we want to listen to. In this case, we'll use a cube.
-
-    Second, the callback function. This function will be called when the object is clicked.
-
-    <Demo title="Threeasy Interactions - Click" url="interactions-click">
-      <Code code={clickCode} lang="js" />
-    </Demo>
-
-    ## Hover
-
-    To add hover events we also add the object and a callback function. However, this time we pass an object with two functions, enter and leave.
-
-    <Demo title="Threeasy Interactions - Hover" url="interactions-hover">
-      <Code code={hoverCode} lang="js" />
-    </Demo>
-  </Markdown>
-  <Waypoint
-    prev={{ url: "/", title: "Why Threeasy?" }}
-    next={{ url: "/threeasy-components", title: "Threeasy Components" }}
-  />
+<Demo title="Threeasy Interactions - Hover" url="interactions-hover">
+  <Code code={hoverCode} lang="js" />
+</Demo>
+	</Markdown>
+	<Waypoint
+		prev={{ url: "/", title: "Why Threeasy?" }}
+		next={{ url: "/threeasy-components", title: "Threeasy Components" }}
+	/>
 </Page>

@@ -57,7 +57,7 @@ class ThreeasyInteractions {
 			if (interactionType == "click") {
 				const item = this.clicks.find((item) => el.object.uuid == item.el.uuid);
 				if (item) {
-					item.fn(event);
+					item.fn(event, el);
 				}
 			}
 		}
@@ -71,13 +71,13 @@ class ThreeasyInteractions {
 				if (isCurrentlyHovered && !wasPreviouslyHovered) {
 					hoverItem.el.hovered = true;
 					if (hoverItem.fns.enter) {
-						hoverItem.fns.enter(event);
+						hoverItem.fns.enter(event, hoverItem.el);
 					}
 				}
 				if (!isCurrentlyHovered && wasPreviouslyHovered) {
 					hoverItem.el.hovered = false;
 					if (hoverItem.fns.leave) {
-						hoverItem.fns.leave(event);
+						hoverItem.fns.leave(event, hoverItem.el);
 					}
 				}
 			});

@@ -24,17 +24,25 @@ app.animator.add(() => {
 		cube.position.y = Math.cos(cubePos);
 	}
 });
-app.interactions.onClick(cube, (e) => {
+app.interactions.onClick(cube, (event, element) => {
 	cube.material.color = new THREE.Color(0x0000ff);
+	console.log(event);
+	console.log(element);
 });
 app.interactions.onHover(cube, {
-	enter: (e) => {
+	enter: (event, element) => {
 		console.log("hovered cube");
 		cube.material.color = new THREE.Color(0xff00ff);
+
+		console.log(event);
+		console.log(element);
 	},
-	leave: (e) => {
+	leave: (event, element) => {
 		console.log("UNhovered cube");
 		cube.material.color = new THREE.Color(0xffff00);
+
+		console.log(event);
+		console.log(element);
 	},
 });
 app.scene.add(cube);
