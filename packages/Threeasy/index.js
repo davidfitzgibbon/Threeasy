@@ -83,6 +83,7 @@ export default class Threeasy {
 		this.clock.start();
 		// RESIZE
 		this.settings.domElement.appendChild(this.renderer.domElement);
+		window.addEventListener("resize", () => this.resize());
 		this.resizeObserver = new ResizeObserver((entries) => this.resize());
 		this.resizeObserver.observe(this.settings.domElement);
 
