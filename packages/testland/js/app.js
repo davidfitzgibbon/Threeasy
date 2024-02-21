@@ -11,7 +11,7 @@ import Threeasy from "threeasy";
 
 window.app = new Threeasy(THREE, {
 	interactions: true,
-	// domElement: document.getElementById("box"),
+	domElement: document.getElementById("box"),
 });
 
 const box = new THREE.BoxGeometry(1, 1, 1);
