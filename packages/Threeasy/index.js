@@ -54,7 +54,6 @@ export default class Threeasy {
 		this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
 		this.renderer.shadowMap.enabled = true;
 		this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-		this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
 
 		// INTERACTIONS
 		this.mouse = {
