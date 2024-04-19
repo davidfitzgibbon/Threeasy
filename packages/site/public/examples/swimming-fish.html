@@ -34,13 +34,23 @@
 		<svg id="circle" viewBox="0 0 100 100" style="display: none">
 			<path d="M50 16c26 0 46 8 46 34S77 80 51 80 4 76 4 50s20-34 46-34Z" />
 		</svg>
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "https://esm.sh/three",
+					"three/addons/": "https://esm.sh/three/examples/jsm/",
+					"threeasy": "https://esm.sh/threeasy",
+					"threeasyComponent": "https://esm.sh/threeasy/component.js"
+				}
+			}
+		</script>
 
 		<script type="module">
 			import * as THREE from "three";
 			import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 			import { Flow } from "./libs/modifiers/CurveModifier.js";
 			import Threeasy from "threeasy";
-			import transformSVGPath from "https://000680810.codepen.website/scripts/transformSVGPath.js";
+			import transformSVGPath from "./helper/transformSVGPath.js";
 
 			console.clear();
 			/* 
@@ -94,7 +104,7 @@
 			};
 			const getFishPointsFromPoints = (points) => {
 				const fishPoints = [];
-				console.log(frequency, amplitude);
+				// console.log(frequency, amplitude);
 				const curve = new THREE.CatmullRomCurve3(points);
 				for (let i = 0; i < pointCount; i++) {
 					const t = i / pointCount;

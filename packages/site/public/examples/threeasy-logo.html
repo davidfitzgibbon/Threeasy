@@ -31,6 +31,16 @@
 	</head>
 
 	<body style="margin: 0">
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "https://esm.sh/three",
+					"three/addons/": "https://esm.sh/three/examples/jsm/",
+					"threeasy": "https://esm.sh/threeasy",
+					"threeasyComponent": "https://esm.sh/threeasy/component.js"
+				}
+			}
+		</script>
 		<script type="module">
 			import Threeasy from "threeasy";
 			import * as THREE from "https://unpkg.com/three@0.142.0/build/three.module.js";
