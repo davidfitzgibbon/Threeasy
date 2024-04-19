@@ -13,11 +13,11 @@ app.scene.background = new THREE.Color("dodgerblue");
 app.camera.position.set(0, 2, 2);
 app.camera.lookAt(0, 0, 0);
 
-const mat = new THREE.MeshBasicMaterial({ color: "white" });
+const mat = new THREE.MeshBasicMaterial();
 const geo = new THREE.BoxGeometry();
 
 const mesh = new THREE.Mesh(geo, mat);
-app.animator.add(() => {
+app.animate(() => {
   mesh.rotation.y += 0.01;
 });
 
@@ -26,26 +26,26 @@ app.scene.add(mesh);
 ---
 
 <Page title="Accessing top level ThreeJS variables">
-  <Markdown>
-    Seasoned ThreeJS users might be wondering how to access top level ThreeJS
-    variables, like `Scene`, `Camera` and `Renderer`. These variables are all
-    still in place, there's just attached to the `app` variable. EG to change
-    the `Scene` background color from the default black, to `dodgerblue`, and to
-    move the `Camera` back and up, you can access from the `app` variable and
-    use them as normal. Advanced users should `console.log(app)` and see what's
-    going on under the hood.
+	<Markdown>
+		Seasoned ThreeJS users might be wondering how to access top level ThreeJS
+		variables, like `Scene`, `Camera` and `Renderer`. These variables are all
+		still in place, there's just attached to the `app` variable. EG to change
+		the `Scene` background color from the default black, to `dodgerblue`, and to
+		move the `Camera` back and up, you can access from the `app` variable and
+		use them as normal. Advanced users should `console.log(app)` and see what's
+		going on under the hood.
 
-    <Demo
-      title="Accessing top level ThreeJS variables"
-      url="change-scene-camera"
-    >
-      <Code code={code} lang="js" />
-    </Demo>
-  </Markdown>
-  <Waypoint
-    prev={{
-      url: "/using-other-threejs-functionality",
-      title: "Using other ThreeJS functionality",
-    }}
-  />
+		<Demo
+			title="Accessing top level ThreeJS variables"
+			url="change-scene-camera"
+		>
+			<Code code={code} lang="js" />
+		</Demo>
+	</Markdown>
+	<Waypoint
+		prev={{
+			url: "/using-other-threejs-functionality",
+			title: "Using other ThreeJS functionality",
+		}}
+	/>
 </Page>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Create In Div</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+
+			html,
+			body {
+				overflow: hidden;
+				min-height: 100svh;
+			}
+		</style>
+	</head>
+	<body>
+		<div
+			style="
+				display: grid;
+				grid-template-columns: 1fr 200px 1fr;
+				place-items: center;
+				height: 100svh;
+			"
+		>
+			<h1>Before</h1>
+			<div id="box" style="width: 100%; height: 100px; background: red"></div>
+			<h1>After</h1>
+		</div>
+		<script type="module" src="/js/test/createInDiv.js"></script>
+	</body>
+</html>

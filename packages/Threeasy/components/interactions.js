@@ -1,4 +1,7 @@
-import * as THREE from "three";
+/**
+ * ThreeasyInteractions class
+ * @class ThreeasyInteractions
+ */
 
 class ThreeasyInteractions {
 	constructor(app) {
@@ -7,8 +10,8 @@ class ThreeasyInteractions {
 		this.hovers = [];
 
 		if (this.app.settings.interactions) {
-			this.raycaster = new THREE.Raycaster();
-			this.pointer = new THREE.Vector2();
+			this.raycaster = new app.THREE.Raycaster();
+			this.pointer = new app.THREE.Vector2();
 			this.app.mouse = this.pointer;
 			this.interactions();
 		}
@@ -83,9 +86,35 @@ class ThreeasyInteractions {
 			});
 		}
 	}
+	/**
+	 * Pass an object and function to fire when it's clicked
+	 * @example
+	 * app.interactions.onClick(mesh,
+	 * 	(event, element) => {
+	 * 		// do something
+	 * 	}
+	 * );
+	 * @param {Object3D} el
+	 * @param {function} fn
+	 */
 	onClick(el, fn) {
 		this.clicks.push({ el, fn });
 	}
+
+	/**
+	 * Pass an object and function to fire when it's clicked
+	 * @example
+	 * app.interactions.onHover(mesh, {
+	 * 	enter: (event, element) => {
+	 * 		// do something
+	 * 	},
+	 * 	leave: (event, element) => {
+	 * 		// do something
+	 * 	},
+	 * });
+	 * @param {Object3D} el
+	 * @param {object} fns - an object with an enter and leave function
+	 */
 	onHover(el, fns) {
 		el.hovered = false;
 		this.hovers.push({ el, fns });

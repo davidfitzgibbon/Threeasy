@@ -10,19 +10,18 @@ import Threeasy from "threeasy";
 
 const app = new Threeasy(THREE, {
   preload: {
-    crate: "/crate.gif"
-  }
+    crate: "/examples/textures/crate.gif",
+  },
 });
+
 app.scene.background = new THREE.Color("dodgerblue");
-app.camera.position.set(0, 2, 2);
-app.camera.lookAt(0, 0, 0);
 
 app.postload(() => {
   const mat = new THREE.MeshStandardMaterial({ map: app.crate });
   const geo = new THREE.BoxGeometry();
 
   const mesh = new THREE.Mesh(geo, mat);
-  app.animator.add(() => {
+  app.animate(() => {
     mesh.rotation.y += 0.01;
   });
 
@@ -32,21 +31,21 @@ app.postload(() => {
 ---
 
 <Page title="Importing Textures">
-  <Markdown>
-    Threeasy automatically sets up a loading manager for you. All you need to do
-    is pass a list of textures you want to `preload` as an object. To use those
-    functions you need to work inside of a function passed to `postload`.
-    There's a big trade-off here admittedly. I'm not sure that this is any less
-    confusing than importing a texture in plain ThreeJS. However, it does avoid
-    the awkward nesting issues of when / where to run a loader vs the animation
-    loop.
+	<Markdown>
+		Threeasy automatically sets up a loading manager for you. All you need to do
+		is pass a list of textures you want to `preload` as an object. To use those
+		functions you need to work inside of a function passed to `postload`.
+		There's a big trade-off here admittedly. I'm not sure that this is any less
+		confusing than importing a texture in plain ThreeJS. However, it does avoid
+		the awkward nesting issues of when / where to run a loader vs the animation
+		loop.
 
-    <Demo title="Import crate texture" url="importing-textures">
-      <Code code={code} lang="js" />
-    </Demo>
-  </Markdown>
-  <Waypoint
-    prev={{ url: "/threeasy-components", title: "Threeasy Components" }}
-    next={{ url: "/importing-models", title: "Importing Models" }}
-  />
+		<Demo title="Import crate texture" url="importing-textures">
+			<Code code={code} lang="js" />
+		</Demo>
+	</Markdown>
+	<Waypoint
+		prev={{ url: "/threeasy-components", title: "Threeasy Components" }}
+		next={{ url: "/importing-models", title: "Importing Models" }}
+	/>
 </Page>

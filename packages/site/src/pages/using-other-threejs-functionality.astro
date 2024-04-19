@@ -5,52 +5,52 @@ import Demo from "../components/Demo.svelte";
 import Page from "../layouts/Page.astro";
 import Waypoint from "../components/Waypoint.svelte";
 
-const code = `import * as THREE from "https://unpkg.com/three@0.125.1/build/three.module.js";
-import { GLTFLoader } from "https://unpkg.com/three@0.125.1/examples/jsm/loaders/GLTFLoader.js";
-import { OrbitControls } from "https://unpkg.com/three@0.125.1/examples/jsm/controls/OrbitControls";
+const code = `import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls";
 import Threeasy from "threeasy";
 
 /*
-  Trophy by Casey Tumbers
-  [CC-BY] (https://creativecommons.org/licenses/by/3.0/)
-  via Poly Pizza (https://poly.pizza/m/6Xu7mttjodo)
+	Trophy by Casey Tumbers
+	[CC-BY] (https://creativecommons.org/licenses/by/3.0/)
+	via Poly Pizza (https://poly.pizza/m/6Xu7mttjodo)
 */
 const app = new Threeasy(THREE, {
-  preload: {
-    trophy: "/trophy.glb"
-  },
-  GLTFLoader
+	preload: {
+		trophy: "/examples/models/trophy.glb",
+	},
+	GLTFLoader,
 });
 app.scene.background = new THREE.Color("dodgerblue");
 
 new OrbitControls(app.camera, app.renderer.domElement);
 
 app.postload(() => {
-  app.scene.add(app.trophy);
-  app.animator.add(() => {
-    app.trophy.rotation.y += 0.01;
-  });
+	app.scene.add(app.trophy);
+	app.animate(() => {
+		app.trophy.rotation.y += 0.01;
+	});
 });
 `;
 ---
 
 <Page title="Using other ThreeJS functionality">
-  <Markdown>
-    This is getting more advanced, but anything you can do with ThreeJS you can
-    do with Threeasy, because Threeasy is just ThreeJS loaded a particular way.
-    For example if you wanted to use `OrbitControls`, you just need to
-    instantiate them as normal, you just need to remember that the `Camera` and
-    `Renderer` are on the `app` variable.
+	<Markdown>
+		This is getting more advanced, but anything you can do with ThreeJS you can
+		do with Threeasy, because Threeasy is just ThreeJS loaded a particular way.
+		For example if you wanted to use `OrbitControls`, you just need to
+		instantiate them as normal, you just need to remember that the `Camera` and
+		`Renderer` are on the `app` variable.
 
-    <Demo title="Using OrbitControls" url="orbitcontrols">
-      <Code code={code} lang="js" />
-    </Demo>
-  </Markdown>
-  <Waypoint
-    prev={{ url: "/importing-models", title: "Importing Models" }}
-    next={{
-      url: "accessing-top-level-variables",
-      title: "Accessing Top Level Variables",
-    }}
-  />
+		<Demo title="Using OrbitControls" url="orbitcontrols">
+			<Code code={code} lang="js" />
+		</Demo>
+	</Markdown>
+	<Waypoint
+		prev={{ url: "/importing-models", title: "Importing Models" }}
+		next={{
+			url: "accessing-top-level-variables",
+			title: "Accessing Top Level Variables",
+		}}
+	/>
 </Page>

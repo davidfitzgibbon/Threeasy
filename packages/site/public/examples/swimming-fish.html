@@ -36,10 +36,10 @@
 		</svg>
 
 		<script type="module">
-			import * as THREE from "https://unpkg.com/three@0.120.1/build/three.module.js";
-			import { GLTFLoader } from "https://unpkg.com/three@0.120.1/examples/jsm/loaders/GLTFLoader.js";
+			import * as THREE from "three";
+			import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 			import { Flow } from "./libs/modifiers/CurveModifier.js";
-			import Threeasy from "https://unpkg.com/threeasy@0.1.13";
+			import Threeasy from "threeasy";
 			import transformSVGPath from "https://000680810.codepen.website/scripts/transformSVGPath.js";
 
 			console.clear();

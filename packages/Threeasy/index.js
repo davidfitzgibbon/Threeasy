@@ -12,11 +12,24 @@ export default class Threeasy {
 	/**
 	 *
 	 * @param {THREE} THREE
+	 * @param {object} settings - settings for your app
+	 * @example
+	 * {
+	 * 	light: false,
+	 * 	preload: {
+	 * 		models: {
+	 * 			car: 'path/to/car.glb'
+	 * 		},
+	 * 		textures: {
+	 * 			crate: 'path/to/crate.jpg',
+	 * 			barrel: 'path/to/barrel.jpg',
+	 * 		}
+	 * 	},
+	 * 	GLTFLoader
 	 * @param {boolean} settings.light - Whether to add a light to the scene.
-	 * @param {any} settings.preload - An object defining texture, .glb or .GLTF files to preload.
+	 * @param {object} settings.preload - An object defining texture, .glb or .GLTF files to preload. Can be any shape of object containing other objects
 	 * @param {GLTFLoader} settings.GLTFLoader - A ThreeJS GLTFLoader, if loading .glb or .gltf.
-	 * @param {any} models - An object containing models that have loaded.
-	 * @param {object} textures - An object containing textures that have loaded.
+	 * @param {OBJLoader} settings.OBJLoader - A ThreeJS OBJLoader, if loading .obj.
 	 */
 	constructor(THREE, settings) {
 		this.settings = {

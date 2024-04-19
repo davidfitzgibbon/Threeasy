@@ -1,5 +1,5 @@
-import * as THREE from "https://unpkg.com/three@0.120.1/build/three.module.js";
-import Threeasy from "https://unpkg.com/threeasy";
+import * as THREE from "three";
+import Threeasy from "threeasy";
 
 const fragment = `
       uniform float pointCount;
@@ -238,68 +238,68 @@ let colorsBG = ["#ddf4f0", "#e4e2ee", "#cbdac3"];
 let colorsText = ["#8a3738", "#840c02", "#444"];
 
 function randomVoronoiVector() {
-  return new THREE.Vector3(
-    Math.round(w * Math.random() - w * 0.5),
-    Math.round(h * Math.random() - h * 0.5),
-    0
-  );
+	return new THREE.Vector3(
+		Math.round(w * Math.random() - w * 0.5),
+		Math.round(h * Math.random() - h * 0.5),
+		0
+	);
 }
 function random3DVector() {
-  return new THREE.Vector3(Math.random(), Math.random(), Math.random());
+	return new THREE.Vector3(Math.random(), Math.random(), Math.random());
 }
 function random3DDirectionalVector() {
-  let v = new THREE.Vector3(
-    Math.random() * 30 * Math.random() < 0.5 ? 1 : -1,
-    Math.random() * 30 * Math.random() < 0.5 ? 1 : -1,
-    Math.random()
-  );
-  return v;
+	let v = new THREE.Vector3(
+		Math.random() * 30 * Math.random() < 0.5 ? 1 : -1,
+		Math.random() * 30 * Math.random() < 0.5 ? 1 : -1,
+		Math.random()
+	);
+	return v;
 }
 function moveVoronoiVectors() {
-  for (let i = 1; i <= 20; i++) {
-    let item = mesh.material.uniforms[`p${i}v`].value;
-    let acc = mesh.material.uniforms[`p${i}a`].value;
+	for (let i = 1; i <= 20; i++) {
+		let item = mesh.material.uniforms[`p${i}v`].value;
+		let acc = mesh.material.uniforms[`p${i}a`].value;
 
-    item.x += acc.x;
-    item.y += acc.y;
+		item.x += acc.x;
+		item.y += acc.y;
 
-    if (item.x <= -w / 2) {
-      item.x = -w / 2;
-      acc.x *= -1;
-    }
-    if (item.x >= w / 2) {
-      item.x = w / 2;
-      acc.x *= -1;
-    }
-    if (item.y <= -h / 2) {
-      item.y = -h / 2;
-      acc.y *= -1;
-    }
-    if (item.y >= h / 2) {
-      item.y = h / 2;
-      acc.y *= -1;
-    }
-  }
+		if (item.x <= -w / 2) {
+			item.x = -w / 2;
+			acc.x *= -1;
+		}
+		if (item.x >= w / 2) {
+			item.x = w / 2;
+			acc.x *= -1;
+		}
+		if (item.y <= -h / 2) {
+			item.y = -h / 2;
+			acc.y *= -1;
+		}
+		if (item.y >= h / 2) {
+			item.y = h / 2;
+			acc.y *= -1;
+		}
+	}
 }
 
 document.body.style.backgroundColor = colorsBG[0];
 document.body.style.color = colorsText[0];
 
 const app = new Threeasy(THREE, {
-  preload: {
-    img1,
-    img2,
-    img3,
-  },
-  alpha: true,
+	preload: {
+		img1,
+		img2,
+		img3,
+	},
+	alpha: true,
 });
 console.log(app.renderer);
 
 app.camera = new THREE.PerspectiveCamera(
-  45,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  6000
+	45,
+	window.innerWidth / window.innerHeight,
+	0.1,
+	6000
 );
 app.camera.position.x = 0;
 app.camera.position.y = 0;
@@ -313,97 +313,97 @@ dirLight.position.set(-3, 5, -3);
 app.scene.add(dirLight);
 
 app.postload(() => {
-  textures = [app.img1, app.img2, app.img3];
-  geo = new THREE.BufferGeometry();
-  w = textures[1].image.naturalWidth;
-  h = textures[1].image.naturalHeight;
-  particleCount = w * h;
+	textures = [app.img1, app.img2, app.img3];
+	geo = new THREE.BufferGeometry();
+	w = textures[1].image.naturalWidth;
+	h = textures[1].image.naturalHeight;
+	particleCount = w * h;
 
-  positions = new THREE.BufferAttribute(new Float32Array(particleCount * 3), 3);
-  coordinates = new THREE.BufferAttribute(
-    new Float32Array(particleCount * 3),
-    3
-  );
+	positions = new THREE.BufferAttribute(new Float32Array(particleCount * 3), 3);
+	coordinates = new THREE.BufferAttribute(
+		new Float32Array(particleCount * 3),
+		3
+	);
 
-  let index = 0;
-  for (let i = 0; i < w; i++) {
-    for (let j = 0; j < h; j++) {
-      positions.setXYZ(index, i - w / 2, j - h / 2, 0);
-      coordinates.setXYZ(index, i, j, 0);
-      index++;
-    }
-  }
-  geo.setAttribute("position", positions);
-  geo.setAttribute("aCoordinates", coordinates);
+	let index = 0;
+	for (let i = 0; i < w; i++) {
+		for (let j = 0; j < h; j++) {
+			positions.setXYZ(index, i - w / 2, j - h / 2, 0);
+			coordinates.setXYZ(index, i, j, 0);
+			index++;
+		}
+	}
+	geo.setAttribute("position", positions);
+	geo.setAttribute("aCoordinates", coordinates);
 
-  mat = new THREE.ShaderMaterial({
-    side: THREE.DoubleSide,
-    transparent: true,
-    depthTest: false,
-    depthWrite: false,
-    uniforms: {
-      progress: { value: progress.progress },
-      w: { value: w },
-      h: { value: h },
-      pointCount: { value: pointCount },
-      currentImg: { value: textures[active % 3] },
-      nextImg: { value: textures[(active + 1) % 3] },
-    },
-    vertexShader: vertex,
-    fragmentShader: fragment,
-  });
-  for (let i = 1; i <= 20; i++) {
-    mat.uniforms[`p${i}v`] = { value: randomVoronoiVector() };
-    mat.uniforms[`p${i}c`] = { value: random3DVector() };
-    mat.uniforms[`p${i}a`] = { value: random3DDirectionalVector() };
-  }
-  mesh = new THREE.Points(geo, mat);
-  app.scene.add(mesh);
+	mat = new THREE.ShaderMaterial({
+		side: THREE.DoubleSide,
+		transparent: true,
+		depthTest: false,
+		depthWrite: false,
+		uniforms: {
+			progress: { value: progress.progress },
+			w: { value: w },
+			h: { value: h },
+			pointCount: { value: pointCount },
+			currentImg: { value: textures[active % 3] },
+			nextImg: { value: textures[(active + 1) % 3] },
+		},
+		vertexShader: vertex,
+		fragmentShader: fragment,
+	});
+	for (let i = 1; i <= 20; i++) {
+		mat.uniforms[`p${i}v`] = { value: randomVoronoiVector() };
+		mat.uniforms[`p${i}c`] = { value: random3DVector() };
+		mat.uniforms[`p${i}a`] = { value: random3DDirectionalVector() };
+	}
+	mesh = new THREE.Points(geo, mat);
+	app.scene.add(mesh);
 
-  app.animate(() => {
-    moveVoronoiVectors();
-    mesh.material.uniforms.progress.value = progress.progress;
-  });
+	app.animate(() => {
+		moveVoronoiVectors();
+		mesh.material.uniforms.progress.value = progress.progress;
+	});
 });
 
 function choose(current, next) {
-  current = current % 3;
-  next = next % 3;
-  mesh.material.uniforms.currentImg.value = textures[current];
-  mesh.material.uniforms.nextImg.value = textures[next];
-  gsap.fromTo(
-    progress,
-    { progress: 0 },
-    { progress: 100, duration: 2, ease: "power1.inOut" }
-  );
-  gsap.to("body", {
-    backgroundColor: colorsBG[next],
-    color: colorsText[next],
-    duration: 1.5,
-    delay: 1,
-    ease: "power4.inOut",
-  });
+	current = current % 3;
+	next = next % 3;
+	mesh.material.uniforms.currentImg.value = textures[current];
+	mesh.material.uniforms.nextImg.value = textures[next];
+	gsap.fromTo(
+		progress,
+		{ progress: 0 },
+		{ progress: 100, duration: 2, ease: "power1.inOut" }
+	);
+	gsap.to("body", {
+		backgroundColor: colorsBG[next],
+		color: colorsText[next],
+		duration: 1.5,
+		delay: 1,
+		ease: "power4.inOut",
+	});
 }
 function choosePrev() {
-  let current = active;
-  let next;
-  if (active == 0) active = 3;
-  active--;
-  next = active;
-  choose(current, next);
+	let current = active;
+	let next;
+	if (active == 0) active = 3;
+	active--;
+	next = active;
+	choose(current, next);
 }
 function chooseNext() {
-  let current = active;
-  let next;
-  active++;
-  next = active;
+	let current = active;
+	let next;
+	active++;
+	next = active;
 
-  choose(current, next);
+	choose(current, next);
 }
 
 document.querySelector(".prev").addEventListener("click", () => {
-  choosePrev();
+	choosePrev();
 });
 document.querySelector(".next").addEventListener("click", () => {
-  chooseNext();
+	chooseNext();
 });

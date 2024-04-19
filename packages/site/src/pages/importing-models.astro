@@ -5,48 +5,48 @@ import Demo from "../components/Demo.svelte";
 import Page from "../layouts/Page.astro";
 import Waypoint from "../components/Waypoint.svelte";
 
-const code = `import * as THREE from "https://unpkg.com/three@0.125.1/build/three.module.js";
-import { GLTFLoader } from "https://unpkg.com/three@0.125.1/examples/jsm/loaders/GLTFLoader.js";
+const code = `import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import Threeasy from "threeasy";
 
 /*
-  Trophy by Casey Tumbers
-  [CC-BY] (https://creativecommons.org/licenses/by/3.0/)
-  via Poly Pizza (https://poly.pizza/m/6Xu7mttjodo)
+	Trophy by Casey Tumbers
+	[CC-BY] (https://creativecommons.org/licenses/by/3.0/)
+	via Poly Pizza (https://poly.pizza/m/6Xu7mttjodo)
 */
 const app = new Threeasy(THREE, {
-  preload: {
-    trophy: "/trophy.glb"
-  },
-  GLTFLoader
+	preload: {
+		trophy: "/examples/models/trophy.glb",
+	},
+	GLTFLoader,
 });
 app.scene.background = new THREE.Color("dodgerblue");
 
 app.postload(() => {
-  app.scene.add(app.trophy);
-  app.animator.add(() => {
-    app.trophy.rotation.y += 0.01;
-  });
+	app.scene.add(app.trophy);
+	app.animate(() => {
+		app.trophy.rotation.y += 0.01;
+	});
 });
 `;
 ---
 
 <Page title="Importing Models">
-  <Markdown>
-    At present only GLTF is supported To import a model you need to follow the
-    same preload routine as with a texture. However, as with a regular ThreeJS
-    project, we need to import the GLTFLoader. Passing this in the settings
-    object to Threeasy will have it set up all your loading needs.
+	<Markdown>
+		At present only GLTF is supported To import a model you need to follow the
+		same preload routine as with a texture. However, as with a regular ThreeJS
+		project, we need to import the GLTFLoader. Passing this in the settings
+		object to Threeasy will have it set up all your loading needs.
 
-    <Demo title="Import trophy GLTF" url="import-glb">
-      <Code code={code} lang="js" />
-    </Demo>
-  </Markdown>
-  <Waypoint
-    prev={{ url: "/importing-textures", title: "Importing Textures" }}
-    next={{
-      url: "/using-other-threejs-functionality",
-      title: "Using Other ThreeJS Functionality",
-    }}
-  />
+		<Demo title="Import trophy GLTF" url="import-glb">
+			<Code code={code} lang="js" />
+		</Demo>
+	</Markdown>
+	<Waypoint
+		prev={{ url: "/importing-textures", title: "Importing Textures" }}
+		next={{
+			url: "/using-other-threejs-functionality",
+			title: "Using Other ThreeJS Functionality",
+		}}
+	/>
 </Page>

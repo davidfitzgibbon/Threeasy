@@ -1,121 +1,174 @@
-import * as THREE from 'three';
-
+/**
+ * ThreeasyAnimator class
+ * @class ThreeasyAnimator
+ */
 class ThreeasyAnimator {
-  constructor(app) {
-    this.app = app;
-    this.tasks = [];
-  }
-  add(fn) {
-    this.tasks.push(fn);
-  }
-  animate() {
-    requestAnimationFrame(this.animate.bind(this));
-    this.tasks.forEach((task) => task());
-
-    this.app.render();
-  }
+	/**
+	 *  Takes an instance of Threeasy
+	 * @param {Threeasy} app
+	 */
+	constructor(app) {
+		this.app = app;
+		this.tasks = [];
+	}
+	/**
+	 * Adds a function to the animation loop
+	 * @example
+	 * app.animator.add(()=>{
+	 *  // do something
+	 * })
+	 * @param {function} fn
+	 */
+	add(fn) {
+		this.tasks.push(fn);
+	}
+	animate() {
+		requestAnimationFrame(this.animate.bind(this));
+		this.tasks.forEach((task) => task());
+		this.app.render();
+	}
 }
 
 class ThreeasyLoader {
-  constructor(app, settings) {
-    this.app = app;
-    this.THREE = app.THREE;
+	constructor(app, settings) {
+		this.app = app;
+		this.THREE = app.THREE;
 
-    this.settings = {
-      load: () => {
-        // console.log("loaded");
-        this.app.init();
-      },
-      progress: (itemURL, itemsLoaded, itemsTotal) => {
-        // console.log("%loaded:", itemsLoaded / itemsTotal);
-      },
-      gltfExtensions: [".gltf", ".glb"],
-      objExtensions: [".obj"],
-      textureExtensions: [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tga"],
-      ...settings,
-    };
-    this.manager = new this.THREE.LoadingManager(
-      () => this.settings.load(),
-      (itemURL, itemsLoaded, itemsTotal) =>
-        this.settings.progress(itemURL, itemsLoaded, itemsTotal)
-    );
-    this.setUpLoaders();
-  }
-  setUpLoaders() {
-    this.TextureLoader = false;
-    this.GLTFLoader = false;
-    this.OBJLoader = false;
+		this.settings = {
+			load: () => {
+				this.app.init();
+			},
+			gltfExtensions: [".gltf", ".glb"],
+			objExtensions: [".obj"],
+			textureExtensions: [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tga"],
+			...settings,
+		};
+		this.manager = new this.THREE.LoadingManager(
+			() => this.settings.load(),
+			(itemURL, itemsLoaded, itemsTotal) =>
+				this.progress(itemURL, itemsLoaded, itemsTotal)
+		);
+		this.setUpLoaders();
+	}
+	/**
+	 * Use to add progress to a loading indicator
+	 * @param {string} itemURL - name of asset being loaded
+	 * @param {number} itemsLoaded - amount of assets loaded
+	 * @param {number} itemsTotal - total assets to load
+	 * @example
+	 * app.loader.progress = (itemURL, itemsLoaded, itemsTotal) =>{
+	 * 	console.log(`${(itemsLoaded / itemsTotal)*100}%`);
+	 * }
+	 */
+	progress(itemURL, itemsLoaded, itemsTotal) {}
+	setUpLoaders() {
+		this.TextureLoader = false;
+		this.GLTFLoader = false;
+		this.OBJLoader = false;
 
-    if (this.app.settings.GLTFLoader) {
-      this.GLTFLoader = new this.app.settings.GLTFLoader(this.manager);
-    }
-    if (this.app.settings.OBJLoader) {
-      this.OBJLoader = new this.app.settings.OBJLoader(this.manager);
-    }
+		if (this.app.settings.GLTFLoader) {
+			this.GLTFLoader = new this.app.settings.GLTFLoader(this.manager);
+		}
+		if (this.app.settings.OBJLoader) {
+			this.OBJLoader = new this.app.settings.OBJLoader(this.manager);
+		}
 
-    this.TextureLoader = new this.THREE.TextureLoader(this.manager);
-  }
-  load() {
-    for (const variable in this.app.settings.preload) {
-      let path = this.app.settings.preload[variable];
+		this.TextureLoader = new this.THREE.TextureLoader(this.manager);
+	}
+	load() {
+		this.handleNesting(this.app.settings.preload);
+	}
+	handleNesting(assets, root = this.app) {
+		for (let key in assets) {
+			if (assets.hasOwnProperty(key)) {
+				const asset = assets[key];
+				if (typeof asset == "string") {
+					this.handleAsset(root, key, asset);
+				} else {
+					this.handleNesting(asset, (root[key] = {}));
+				}
+			}
+		}
+	}
+	handleAsset(root, variable, path) {
+		// gltf
+		if (this.endsWith(path, this.settings.gltfExtensions)) {
+			this.handleGLTF(root, variable, path);
+		}
 
-      // gltf
-      if (this.endsWith(path, this.settings.gltfExtensions)) {
-        if (this.GLTFLoader) {
-          this.GLTFLoader.load(path, (gltf) => {
-            this.app[variable] = gltf.scene;
-          });
-        } else {
-          console.warn(
-            `ThreeasyLoader: GLTFLoader is not defined trying to load: ${path}`
-          );
-        }
-      }
+		// obj
+		if (this.endsWith(path, this.settings.objExtensions)) {
+			this.handleOBJ(root, variable, path);
+		}
 
-      // obj
-      if (this.endsWith(path, this.settings.objExtensions)) {
-        if (this.OBJLoader) {
-          this.OBJLoader.load(path, (obj) => {
-            this.app[variable] = obj;
-          });
-        } else {
-          console.warn(
-            `ThreeasyLoader: OBJLoader is not defined trying to load: ${path}`
-          );
-        }
-      }
-
-      // texture
-      if (this.endsWith(path, this.settings.textureExtensions)) {
-        this.TextureLoader.load(path, (texture) => {
-          this.app[variable] = texture;
-          this.setUpTexture(this.app[variable]);
-        });
-      }
-    }
-  }
-  endsWith(path, arr) {
-    return arr.some((extension) => path.endsWith(extension));
-  }
-  setUpTexture(texture) {
-    texture.encoding = this.THREE.sRGBEncoding;
-    texture.wrapT = this.THREE.RepeatWrapping;
-    texture.wrapS = this.THREE.RepeatWrapping;
-  }
+		// texture
+		if (this.endsWith(path, this.settings.textureExtensions)) {
+			this.handleTexture(root, variable, path);
+		}
+	}
+	handleGLTF(root, variable, path) {
+		if (this.GLTFLoader) {
+			this.GLTFLoader.load(path, (gltf) => {
+				root[variable] = gltf.scene;
+			});
+		} else {
+			console.warn(
+				`ThreeasyLoader: GLTFLoader is not defined trying to load: ${path}`
+			);
+		}
+	}
+	handleOBJ(root, variable, path) {
+		if (this.OBJLoader) {
+			this.OBJLoader.load(path, (obj) => {
+				root[variable] = obj;
+			});
+		} else {
+			console.warn(
+				`ThreeasyLoader: OBJLoader is not defined trying to load: ${path}`
+			);
+		}
+	}
+	handleTexture(root, variable, path) {
+		this.TextureLoader.load(path, (texture) => {
+			root[variable] = texture;
+			this.setUpTexture(root[variable]);
+		});
+	}
+	endsWith(path, arr) {
+		return arr.some((extension) => path.endsWith(extension));
+	}
+	setUpTexture(texture) {
+		texture.colorSpace = this.THREE.SRGBColorSpace;
+		texture.wrapT = this.THREE.RepeatWrapping;
+		texture.wrapS = this.THREE.RepeatWrapping;
+	}
 }
 
 class ThreeasyPostLoader {
-  constructor(app) {
-    this.app = app;
-    this.tasks = [];
-  }
-  add(fn) {
-    this.tasks.push(fn);
-  }
-  load() {
-    this.tasks.forEach((task) => task());
-  }
+	constructor(app) {
+		this.app = app;
+		this.tasks = [];
+	}
+	/**
+	 * Saves an array of functions to run when all assets are loaded
+	 * @example
+	 * app.postLoader(()=>{
+	 *  app.loadingAnimation.end();
+	 * })
+	 * @param {function} fn - a function to run after all assets have loaded
+	 */
+	add(fn) {
+		this.tasks.push(fn);
+	}
+	load() {
+		this.tasks.forEach((task) => task());
+	}
 }
+
+/**
+ * ThreeasyInteractions class
+ * @class ThreeasyInteractions
+ */
 
 class ThreeasyInteractions {
 	constructor(app) {
@@ -124,8 +177,8 @@ class ThreeasyInteractions {
 		this.hovers = [];
 
 		if (this.app.settings.interactions) {
-			this.raycaster = new THREE.Raycaster();
-			this.pointer = new THREE.Vector2();
+			this.raycaster = new app.THREE.Raycaster();
+			this.pointer = new app.THREE.Vector2();
 			this.app.mouse = this.pointer;
 			this.interactions();
 		}
@@ -200,9 +253,35 @@ class ThreeasyInteractions {
 			});
 		}
 	}
+	/**
+	 * Pass an object and function to fire when it's clicked
+	 * @example
+	 * app.interactions.onClick(mesh,
+	 * 	(event, element) => {
+	 * 		// do something
+	 * 	}
+	 * );
+	 * @param {Object3D} el
+	 * @param {function} fn
+	 */
 	onClick(el, fn) {
 		this.clicks.push({ el, fn });
 	}
+
+	/**
+	 * Pass an object and function to fire when it's clicked
+	 * @example
+	 * app.interactions.onHover(mesh, {
+	 * 	enter: (event, element) => {
+	 * 		// do something
+	 * 	},
+	 * 	leave: (event, element) => {
+	 * 		// do something
+	 * 	},
+	 * });
+	 * @param {Object3D} el
+	 * @param {object} fns - an object with an enter and leave function
+	 */
 	onHover(el, fns) {
 		el.hovered = false;
 		this.hovers.push({ el, fns });
@@ -217,11 +296,24 @@ class Threeasy {
 	/**
 	 *
 	 * @param {THREE} THREE
+	 * @param {object} settings - settings for your app
+	 * @example
+	 * {
+	 * 	light: false,
+	 * 	preload: {
+	 * 		models: {
+	 * 			car: 'path/to/car.glb'
+	 * 		},
+	 * 		textures: {
+	 * 			crate: 'path/to/crate.jpg',
+	 * 			barrel: 'path/to/barrel.jpg',
+	 * 		}
+	 * 	},
+	 * 	GLTFLoader
 	 * @param {boolean} settings.light - Whether to add a light to the scene.
-	 * @param {any} settings.preload - An object defining texture, .glb or .GLTF files to preload.
+	 * @param {object} settings.preload - An object defining texture, .glb or .GLTF files to preload. Can be any shape of object containing other objects
 	 * @param {GLTFLoader} settings.GLTFLoader - A ThreeJS GLTFLoader, if loading .glb or .gltf.
-	 * @param {any} models - An object containing models that have loaded.
-	 * @param {object} textures - An object containing textures that have loaded.
+	 * @param {OBJLoader} settings.OBJLoader - A ThreeJS OBJLoader, if loading .obj.
 	 */
 	constructor(THREE, settings) {
 		this.settings = {

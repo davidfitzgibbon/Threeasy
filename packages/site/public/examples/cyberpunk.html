@@ -69,14 +69,14 @@
 			<a target="_blank" href="https://github.com/leifniem">github</a>
 		</h1>
 		<script type="module">
-			import * as THREE from "https://unpkg.com/three@0.120.1/build/three.module.js";
-			import { GLTFLoader } from "https://unpkg.com/three@0.120.1/examples/jsm/loaders/GLTFLoader";
-			import { EffectComposer } from "https://unpkg.com/three@0.120.1/examples/jsm/postprocessing/EffectComposer";
-			import { ShaderPass } from "https://unpkg.com/three@0.120.1/examples/jsm/postprocessing/ShaderPass";
-			import { RenderPass } from "https://unpkg.com/three@0.120.1/examples/jsm/postprocessing/RenderPass";
+			import * as THREE from "three";
+			import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
+			import { EffectComposer } from "three/addons/postprocessing/EffectComposer";
+			import { ShaderPass } from "three/addons/postprocessing/ShaderPass";
+			import { RenderPass } from "three/addons/postprocessing/RenderPass";
 			import { FontLoader } from "./libs/loaders/FontLoader.js";
 			import { TextGeometry } from "./libs/geometries/TextGeometry.js";
-			import Threeasy from "https://unpkg.com/threeasy@0.1.13";
+			import Threeasy from "threeasy";
 
 			const app = new Threeasy(THREE, {
 				preload: {
